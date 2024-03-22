@@ -16,13 +16,13 @@ class db
             $dsn = "mysql:host={$this->server}";
             $this->connection = new PDO($dsn, $this->username, $this->password);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $this->connection->query("CREATE DATABASE IF NOT EXISTS {$this->database}");
+            $stmt = $this->connection->query("CREATE database if not exists {$this->database}");
             $stmt->execute();
             $this->connection->exec("USE {$this->database}");
 
 
-            $sql_create_table = "CREATE TABLE IF NOT EXISTS Customers (
-                CustomerID INT AUTO_INCREMENT PRIMARY KEY,
+            $CustomersTable = "CREATE table if not exists customers (
+                CID INT AUTO_INCREMENT PRIMARY KEY,
                 FirstName VARCHAR(50),
                 LastName VARCHAR(50),
                 Email VARCHAR(100),
@@ -30,7 +30,7 @@ class db
                 Address VARCHAR(255),
                 Password VARCHAR(255)
             )";
-            $connection->query($sql_create_table);
+            $this->connection->query($CustomersTable);
             
 
         } catch (PDOException $e) {
