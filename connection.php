@@ -1,6 +1,3 @@
-
-
-
 <?php
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
@@ -11,21 +8,39 @@ class db
     private $server = 'localhost';
     private $username = 'root'; 
     private $password = '';
-    private $database = 'Cafeterie';
+    private $database = 'Cafeteria';
     private $connection;
-    function __construct()
-    {
+
+    function __construct(){
         try {
-            "CREATE DATABASE IF NOT EXISTS Cafeterie";
-            $dsn = "mysql:host={$this->server};dbname={$this->database}";
+            $dsn = "mysql:host={$this->server}";
             $this->connection = new PDO($dsn, $this->username, $this->password);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $this->connection->query("CREATE DATABASE IF NOT EXISTS {$this->database}");
+            $stmt->execute();
+
+            $this->connection->exec("USE {$this->database}");
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());
         }
     }
 
+    function get_connection()
+    {
+        return $this->connection;
+    }
+
+
+
+
+
+
+
+
+
+
 }
-$db = new db(); // Create an instance of the db class and establish connection
-echo "Connected"; // If this is printed, it means the connection was successful
+
+$db = new db(); 
+echo "Connected";
 ?>
