@@ -5,17 +5,17 @@ include 'connection.php';
 $db = new db();
 $conn = $db->get_connection();
 
-// $user_id = $_SESSION['user_id']; // Uncomment this line if you're using session
+// $customer_id = $_SESSION['customer_id']; // Uncomment this line if you're using session
 
-$user_id = 1; // For testing, replace with actual user_id when using sessions
+$customer_id = 1; // For testing, replace with actual customer_id when using sessions
 
-if (!isset($user_id)) {
+if (!isset($customer_id)) {
     header('location:login.php');
     exit(); // Ensure script execution stops after redirection
 }
 
 if (isset($_GET['logout'])) {
-    unset($user_id);
+    unset($customer_id);
     session_destroy();
     header('location:login.php');
     exit(); // Ensure script execution stops after redirection
@@ -28,8 +28,8 @@ if (isset($_POST['add_to_orders'])) {
     $product_quantity = $_POST['product_quantity'];
 
     // Using the insert_data method from the db class
-    $cols = 'user_id, name, price, image, quantity';
-    $values = [$user_id, $product_name, $product_price, $product_image, $product_quantity];
+    $cols = 'customer_id, name, price, image, quantity';
+    $values = [$customer_id, $product_name, $product_price, $product_image, $product_quantity];
     $inserted = $db->insert_data('orders', $cols, $values);
     
     if ($inserted) {
@@ -57,7 +57,7 @@ if(isset($_POST['update_orders'])){
 if(isset($_GET['remove'])){
     $remove_id = $_GET['remove'];
     
-    // Prepare the delete query
+    // Prepare the delete 
     $stmt = $conn->prepare("DELETE FROM orders WHERE id = :id");
     
     // Bind parameter and execute
@@ -68,10 +68,10 @@ if(isset($_GET['remove'])){
 
 if(isset($_GET['delete_all'])){
     // Prepare the delete query
-    $stmt = $conn->prepare("DELETE FROM orders WHERE user_id = :user_id");
+    $stmt = $conn->prepare("DELETE FROM orders WHERE customer_id = :customer_id");
     
     // Bind parameter and execute
-    $stmt->execute(['user_id' => $user_id]);
+    $stmt->execute(['customer_id' => $customer_id]);
     
     header('location:index.php');
 }
@@ -101,26 +101,29 @@ if(isset($message)){
 
 <div class="container">
 
-<div class="user-profile">
+<div class="customer-profile">
 
    <?php
+     $fetch_customer = [];
       // Prepare and execute a SELECT query using a prepared statement
-      $stmt = $conn->prepare("SELECT * FROM `customers` WHERE customer_id = :user_id");
-      $stmt->bindParam(':user_id', $user_id);
+      $stmt = $conn->prepare("SELECT * FROM `customers` WHERE customer_id = :customer_id");
+      $stmt->bindParam(':customer_id', $customer_id);
       $stmt->execute();
       
-      // Check if the query was successful and fetch user information
+      // Check if the query was successful and fetch customer information
       if($stmt->rowCount() > 0){
-         $fetch_user = $stmt->fetch(PDO::FETCH_ASSOC);
+         $fetch_customer = $stmt->fetch(PDO::FETCH_ASSOC);
       };
    ?>
 
-   <p> username : <span><?php echo $fetch_user['first_name']; ?></span> </p>
-   <p> email : <span><?php echo $fetch_user['email']; ?></span> </p>
+     
+
+   <p> customername : <span><?php echo $fetch_customer['first_name']; ?></span> </p>
+   <p> email : <span><?php echo $fetch_customer['email']; ?></span> </p>
    <div class="flex">
       <a href="login.php" class="btn">login</a>
       <a href="register.php" class="option-btn">register</a>
-      <a href="index.php?logout=<?php echo $user_id; ?>" onclick="return confirm('are your sure you want to logout?');" class="delete-btn">logout</a>
+      <a href="index.php?logout=<?php echo $customer_id; ?>" onclick="return confirm('are your sure you want to logout?');" class="delete-btn">logout</a>
    </div>
 
 </div>
@@ -141,11 +144,11 @@ if(isset($message)){
    ?>
       <form method="post" class="box" action="">
          <img src="images/<?php echo $fetch_product['image']; ?>" alt="">
-         <div class="name"><?php echo $fetch_product['name']; ?></div>
+         <div class="name"><?php echo $fetch_product['product_name']; ?></div>
          <div class="price">$<?php echo $fetch_product['price']; ?>/-</div>
          <input type="number" min="1" name="product_quantity" value="1">
          <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
-         <input type="hidden" name="product_name" value="<?php echo $fetch_product['name']; ?>">
+         <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
          <input type="hidden" name="product_price" value="<?php echo $fetch_product['price']; ?>">
          <input type="submit" value="add to orders" name="add_to_orders" class="btn">
       </form>
@@ -174,8 +177,8 @@ if(isset($message)){
       <tbody>
       <?php
          // Prepare and execute a SELECT query using a prepared statement to retrieve orders items
-         $stmt = $db->get_connection()->prepare("SELECT * FROM `orders` WHERE customer_id = :user_id");
-         $stmt->bindParam(':user_id', $user_id);
+         $stmt = $db->get_connection()->prepare("SELECT * FROM `orders` WHERE customer_id = :customer_id");
+         $stmt->bindParam(':customer_id', $customer_id);
          $stmt->execute();
          $grand_total = 0;
          // Fetch orders items from the executed statement
