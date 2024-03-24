@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 class db
 {
-    private $server = 'localhost';
+    private $server = '127.0.0.1:3307';
     private $username = 'root'; 
     private $password = '';
     private $database = 'Cafeteria';
@@ -100,7 +100,7 @@ class db
     {
         return $this->connection;
     }
-     function  insert_data($table, $cols, $values) {
+     function insert_data($table, $cols, $values) {
         try {
             $valuesch = implode(', ', array_fill(0, count($values), '?'));
             $query = "INSERT INTO $table ($cols) VALUES ($valuesch)";
