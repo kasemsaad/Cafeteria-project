@@ -300,6 +300,22 @@ if(!empty($message)){
    <td>$<?php echo $grand_total; ?>/-</td>
    <td><a href="userMakeOrder.php?delete_all" onclick="return confirm('Delete all from orders?');" class="delete-btn <?php echo ($grand_total > 0)?'':'disabled'; ?>">Delete All</a></td>
 </tr>
+
+
+-<?php
+// Calculate grand total (if not already calculated)
+$grand_total = 0;
+$stmt_total = $conn->prepare("SELECT SUM(price * quantity) AS grand_total FROM order_details WHERE order_id = ?");
+$stmt_total->execute([$order_id]);
+$grand_total_row = $stmt_total->fetch(PDO::FETCH_ASSOC);
+if ($grand_total_row) {
+    $grand_total = $grand_total_row['grand_total'];
+}
+
+// Update total_amount in orders table
+$stmt_update_total = $conn->prepare("UPDATE orders SET total_amount = ? WHERE order_id = ?");
+$stmt_update_total->execute([$grand_total, $order_id]);
+?>
    
 </tbody>
 
