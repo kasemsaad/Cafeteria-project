@@ -302,3 +302,43 @@ body {
     height: 200px;
   }
 }
+
+#notes {
+  width: 73%; /* Set the width of the text area to 100% */
+  height: 100px;
+  margin: 20 0 20 0; /* Add margin bottom for spacing */
+}
+
+#roomlist {
+  width: 20%; /* Set the width of the combo box to 50% */
+  height: 30px;
+  margin: 10 0 20 0; /* Add margin bottom for spacing */
+}
+.container .shopping-order .order-btn {
+  margin-top: 20px; /* Increase the margin between the table bottom and the button */
+  text-align: center;
+}
+
+.container .shopping-order .order-btn a {
+  display: inline-block;
+  padding: 10px 30px;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--white);
+  border-radius: 5px;
+  text-transform: capitalize;
+  background-color: var(--blue);
+}
+
+.container .shopping-order .order-btn a:hover {
+  background-color: var(--black);
+}
+
+.form-row label {
+  display: block; /* Make labels display as block elements */
+  font-size: 16px; /* Adjust font size */
+  font-weight: bold;
+  margin-top: 10px; /* Add spacing between labels and form elements */
+  margin-bottom: 10px; /* Add spacing between labels and form elements */
+  color: var(--black); /* Set label color */
+}
