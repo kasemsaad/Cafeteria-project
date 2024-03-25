@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 class db
 {
-    private $server = 'localhost';
+    private $server = '127.0.0.1:3307';
     private $username = 'root'; 
     private $password = '';
     private $database = 'Cafeteria';
@@ -78,13 +78,14 @@ class db
                 FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE
             )";
             $this->connection->query($orders);
+            
 
             $order_details = "CREATE TABLE IF NOT EXISTS order_details (
+                order_detail_id INT AUTO_INCREMENT PRIMARY KEY,
                 order_id INT NOT NULL,
                 product_id INT NOT NULL,
                 quantity INT NOT NULL,
                 price DECIMAL(10, 2) NOT NULL,
-                PRIMARY KEY (order_id, product_id),
                 FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
                 FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
             )";
@@ -100,7 +101,7 @@ class db
     {
         return $this->connection;
     }
-     function  insert_data($table, $cols, $values) {
+     function insert_data($table, $cols, $values) {
         try {
             $valuesch = implode(', ', array_fill(0, count($values), '?'));
             $query = "INSERT INTO $table ($cols) VALUES ($valuesch)";
