@@ -1,15 +1,11 @@
 <?php
-session_start(); // Start session if not already started
+session_start();
 include 'connection.php';
 
-// Initialize PDO connection
 $db = new db();
 $conn = $db->get_connection();
 
-//$customer_id = isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : null;
-
 $customer_id = 1; // For testing, replace with actual customer_id when using sessions
-
 
 if (!isset($customer_id)) {
     header('location: login.php');
@@ -23,16 +19,17 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-$message = []; // Initialize an empty array to store messages
+$message = [];
 
+// Check if the order is already submitted
 $stmt_order = $conn->prepare("SELECT order_id FROM orders WHERE customer_id = ? AND order_status = 'Pending'");
 $stmt_order->execute([$customer_id]);
 $existing_order = $stmt_order->fetch(PDO::FETCH_ASSOC);
 
 if (!$existing_order) {
     // If no existing order, create a new order
-    $stmt_create_order = $conn->prepare("INSERT INTO orders (customer_id, order_date, room_number, notes, order_status) VALUES (?, ?, ?, ?, ?)");
-    $stmt_create_order->execute([$customer_id, $order_date, '123', '', 'Pending']);
+    $stmt_create_order = $conn->prepare("INSERT INTO orders (customer_id, room_number, notes, order_status) VALUES (?, ?, ?, ?)");
+    $stmt_create_order->execute([$customer_id, '123', '', 'Pending']);
     $order_id = $conn->lastInsertId();
 } else {
     // If existing order, use that order ID
@@ -64,10 +61,13 @@ if (isset($_POST['add_to_orders'])) {
             } else {
                 // If product does not exist, add it to the order
                 // Insert product details into order_details
-                $stmt = $conn->prepare("INSERT INTO order_details (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+               /*  $stmt = $conn->prepare("INSERT INTO order_details (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$order_id, $product_id, $product_quantity, $product_price]); */
+ 
+                $stmt = $conn->prepare("INSERT INTO cart (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
                 $stmt->execute([$order_id, $product_id, $product_quantity, $product_price]);
  
-                $message[] = 'Product added to orders!';
+                $message[] = 'Product added to cart!';
             }
         } catch (PDOException $e) {
             // Handle the exception
@@ -82,10 +82,12 @@ if(isset($_POST['update_orders'])){
     $product_id = $_POST['product_id'];
     
     // Prepare the update query
-    $stmt = $conn->prepare("UPDATE order_details SET quantity = ? WHERE order_id = ? AND product_id = ?");
-    
+    //$stmt = $conn->prepare("UPDATE order_details SET quantity = ? WHERE order_id = ? AND product_id = ?");
+    $stmt2 = $conn->prepare("UPDATE cart SET quantity = ? WHERE order_id = ? AND product_id = ?");
+
     // Bind parameters and execute
-    $stmt->execute([$update_quantity, $order_id, $product_id]);
+   // $stmt->execute([$update_quantity, $order_id, $product_id]);
+    $stmt2->execute([$update_quantity, $order_id, $product_id]);
     
     $message[] = 'Order quantity updated successfully!';
 }
@@ -96,10 +98,15 @@ if(isset($_GET['remove'])){
    
    try {
        // Prepare the delete query using the correct column names for the primary keys
-       $stmt = $conn->prepare("DELETE FROM order_details WHERE order_id = ? AND product_id = ?");
+       //$stmt = $conn->prepare("DELETE FROM order_details WHERE order_id = ? AND product_id = ?");
        
        // Bind parameters and execute
-       $stmt->execute([$order_id, $product_id]);
+       //$stmt->execute([$order_id, $product_id]);
+       
+       $stmt2 = $conn->prepare("DELETE FROM cart WHERE order_id = ? AND product_id = ?");
+       
+       // Bind parameters and execute
+       $stmt2->execute([$order_id, $product_id]);
        
        $message[] = 'Item removed successfully from the order!';
    } catch (PDOException $e) {
@@ -129,17 +136,58 @@ if(isset($_POST['update_order_details'])){
 
 
 if(isset($_GET['delete_all'])){
-    // Prepare the delete query
-    $stmt = $conn->prepare("DELETE FROM orders WHERE customer_id = ?");
-    
-    // Bind parameter and execute
-    $stmt->execute([$customer_id]);
-    
-    header('location: userMakeOrder.php');
-    exit(); // Ensure script execution stops after redirection
+   // Prepare the delete query
+   $stmt = $conn->prepare("DELETE FROM cart");
+   
+   // Bind parameter and execute
+   $stmt->execute();
+   
+   header('location: userMakeOrder.php');
+   exit(); // Ensure script execution stops after redirection
 }
 
+
+if(isset($_GET['new_order'])){
+   // Prepare the delete query
+   $stmt = $conn->prepare("DELETE FROM orders WHERE customer_id = ? And order_id = ?");
+   
+   // Bind parameter and execute
+   $stmt->execute([$customer_id], [$order_id]);
+   
+   header('location: userMakeOrder.php');
+   exit(); // Ensure script execution stops after redirection
+}
+
+// Check if the "Submit Order" button is clicked
+// Check if the "Submit Order" button is clicked
+if (isset($_POST['submit_order'])) {
+   try {
+       // Update order status to "In Progress"
+       $stmt_update_status = $conn->prepare("UPDATE orders SET order_status = 'In Progress' WHERE order_id = ?");
+       $stmt_update_status->execute([$order_id]);
+
+       // Move cart data to order_details table
+       $stmt_move_cart_data = $conn->prepare("INSERT INTO order_details (order_id, product_id, quantity, price) SELECT order_id, product_id, quantity, price FROM cart WHERE order_id = ?");
+       $stmt_move_cart_data->execute([$order_id]);
+
+       // Delete cart data after moving it to order_details
+       $stmt_delete_cart_data = $conn->prepare("DELETE FROM cart");
+       $stmt_delete_cart_data->execute();
+
+       // Unset the order_id session variable to clear the shopping cart
+       unset($_SESSION['order_id']);
+
+       // Redirect to prevent resubmission of form
+       header('location:userMakeOrder.php?new_order_id=');
+       exit();
+   } catch (PDOException $e) {
+       $message[] = 'Error submitting order: ' . $e->getMessage();
+   }
+}
+
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -231,8 +279,8 @@ if(!empty($message)){
       <tbody>
    <?php
       // Fetch orders
-      $stmt = $conn->prepare("SELECT od.*, p.image, p.product_name, p.price FROM order_details od JOIN products p ON od.product_id = p.product_id JOIN orders o ON od.order_id = o.order_id WHERE o.customer_id = ?");
-      $stmt->execute([$customer_id]);
+      $stmt = $conn->prepare("SELECT c.*, p.image, p.product_name, p.price FROM cart c JOIN products p ON c.product_id = p.product_id WHERE c.order_id = ?");
+      $stmt->execute([$order_id]);
       $grand_total = 0;
 
       while($fetch_orders = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -305,7 +353,7 @@ if(!empty($message)){
 -<?php
 // Calculate grand total (if not already calculated)
 $grand_total = 0;
-$stmt_total = $conn->prepare("SELECT SUM(price * quantity) AS grand_total FROM order_details WHERE order_id = ?");
+$stmt_total = $conn->prepare("SELECT SUM(price * quantity) AS grand_total FROM cart WHERE order_id = ?");
 $stmt_total->execute([$order_id]);
 $grand_total_row = $stmt_total->fetch(PDO::FETCH_ASSOC);
 if ($grand_total_row) {
@@ -322,7 +370,19 @@ $stmt_update_total->execute([$grand_total, $order_id]);
    </table>
 
    <div class="orders-btn">  
-      <a href="#" class="btn <?php echo ($grand_total > 0)?'':'disabled'; ?>">Proceed to Checkout</a>
+   <form method="post">
+    
+   <?php 
+   
+$stmt_order_status = $conn->prepare("SELECT order_status FROM orders WHERE order_id = ?");
+$stmt_order_status->execute([$order_id]);
+$order_status_row = $stmt_order_status->fetch(PDO::FETCH_ASSOC);
+    $order_status = $order_status_row['order_status'];
+   if ($order_status === 'Pending'): ?>
+   <input type="submit" name="submit_order" value="Submit Order" class="btn">
+    <?php endif; ?>
+   </form>
+   <a href="#" class="btn <?php echo ($grand_total > 0)?'':'disabled'; ?>">Proceed to Checkout</a>
    </div>
 
 </div>

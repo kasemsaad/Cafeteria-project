@@ -342,3 +342,8 @@ body {
   margin-bottom: 10px; /* Add spacing between labels and form elements */
   color: var(--black); /* Set label color */
 }
+.orders-btn input[type="submit"] {
+  display: inline-block !important; /* Ensure the button is displayed inline */
+  visibility: visible !important; /* Ensure the button is visible */
+  opacity: 1 !important; /* Ensure full opacity */
+}
