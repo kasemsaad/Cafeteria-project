@@ -2,7 +2,10 @@
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
-
+$err = [];
+if (isset ($_GET['err'])) {
+  $err = json_decode($_GET['err'], true);
+}
 class db
 {
     private $server = '127.0.0.1:3307';
@@ -101,6 +104,18 @@ class db
     {
         return $this->connection;
     }
+    function get_data($table, $condition = "", $params = array())
+    {
+        $query = "SELECT * FROM $table";
+        if (!empty($condition)) {
+            $query .= " WHERE $condition";
+        }
+        
+        $statement = $this->connection->prepare($query);
+        $statement->execute($params);
+        
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
      function insert_data($table, $cols, $values) {
         try {
             $valuesch = implode(', ', array_fill(0, count($values), '?'));
@@ -109,7 +124,10 @@ class db
             $statement->execute($values);
             return true;
         } catch (PDOException $e) {
-            die("Execution failed: " . $e->getMessage());
+            // die("Execution failed: " . $e->getMessage());
+                        header("location:Register.php");
+                        
+
         }
         
     }
@@ -120,9 +138,13 @@ class db
             $query = "SELECT $cols FROM $table WHERE email IN ($valuesch)";
             $statement = $this->connection->prepare($query);
             $statement->execute($email);
+
             return $statement;
         } catch (PDOException $e) {
-            die("Execution failed: " . $e->getMessage());
+
+            // die("Execution failed: " . $e->getMessage());
+            header("location:Register.php?err=" . json_encode($e->getMessage()));
+
         }
     }
 

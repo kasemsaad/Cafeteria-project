@@ -1,7 +1,7 @@
 <?php
 require "connection.php";
 echo "<h1>Hello</h1>";
-
+if (isset($_POST['register'])) {
 $FirstName = validation($_POST["FirstName"]);
 $LastName = validation($_POST["LastName"]);
 $Email = $_POST["Email"];
@@ -12,7 +12,7 @@ $ConPassword = $_POST["ConPassword"];
 $role = "User";
 $From = $_FILES['CustomerImage']['tmp_name'];
 $Img = $_FILES['CustomerImage']['name'];
-move_uploaded_file($From, "./Img/" . $Img);
+move_uploaded_file($From, "./images/" . $Img);
 /////////////////////////////////////////////////////////
 $err = [];
 
@@ -60,7 +60,30 @@ if (count($err) > 0) {
     } catch (PDOException $e) {
         die ("Connection failed: " . $e->getMessage());
     }
+}}
+else if (isset($_POST["login"])) {
+    try {
+        $Email = $_POST['Email'];
+        $Password = $_POST['Password'];
+        
+        $db = new db();
+        $res = $db->get_data("customers", "email = ?", array($Email));  
+
+        if (!empty($res) && password_verify($Password,$res[0]['password']) ){
+            
+            setcookie("Email", $Email);
+            header("location:index.php?success"); /////////////enter after check
+        } else {
+
+            header("location:index.php?err=1");
+        }
+    } catch (mysqli_sql_exception $e) {
+        // Handle any database exceptions
+        header("location:index.php?err=44444");
+        exit();
+    }
 }
+
 function validation($data)
 {
     $data = trim($data);
