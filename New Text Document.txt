@@ -1,0 +1,60 @@
+<?php
+require("db.php");
+
+if(isset($_POST['update_category'])){
+    // Receive data from the form
+    $category_id = validate($_POST['category_id']);
+    $category_name = validate($_POST['category_name']);
+    $created_at = validate($_POST['created_at']);
+    $updated_at = validate($_POST['updated_at']);
+
+    // Validate data
+    $errors = [];
+    if(strlen($category_id) < 2){
+        $errors['category_id'] = "Category ID must be at least 2 characters long.";
+    }
+    if(strlen($category_name) < 2){
+        $errors['category_name'] = "Category name must be at least 2 characters long.";
+    }
+
+    if(count($errors) > 0){
+        // If there are errors, redirect the user back to the form with error messages
+        header("Location: editCategory.php?id=$category_id&errors=" . json_encode($errors));
+        exit();
+    }
+
+    try{
+        // Update the category using the update_data function
+        $db = new db();
+        $db->update_data("categories", "category_name='$category_name', created_at='$created_at', updated_at='$updated_at'", "category_id='$category_id'");
+        header("Location: listCategory.php");
+        exit(); // Ensure that the script stops execution after redirection
+    }catch(PDOException $e){
+        echo $e->getMessage();
+        // If an error occurs, redirect the user to an error page
+        header("Location: editCategory.php?id=$category_id&error=1");
+        exit(); // Ensure that the script stops execution after redirection
+    }
+}
+?>
+--------------------------------------------------------------------------
+<?php
+require("db.php");
+
+if(isset($_GET['id'])){
+    $category_id = $_GET['id'];
+    try{
+        // Delete the category using the delete_data function
+        $db = new db();
+        $db->delete_data("categories", "category_id='$category_id'");
+        header("Location: listCategory.php");
+        exit(); // Ensure that the script stops execution after redirection
+    }catch(PDOException $e){
+        echo $e->getMessage();
+        // If an error occurs, redirect the user to an error page
+        header("Location: listCategory.php?error=1");
+        exit(); // Ensure that the script stops execution after redirection
+    }
+}
+?>
+---------------------------------------------------------
