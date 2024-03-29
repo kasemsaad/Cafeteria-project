@@ -44,14 +44,14 @@ if (isset ($_GET['err'])) {
       <div class="col-12 col-lg-9 col-xl-7">
         <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
           <div class="card-body p-4 p-md-5">
-            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Cafetria</h3>
             <form action="CustomerControler.php" method="post" enctype="multipart/form-data">
 
               <div class="row">
 
                 <div class="col-md-6 mb-4">
                   <div class="form-outline">
-                  <input type="text" id="firstName" class="form-control form-control-lg" name="FirstName"   />
+                  <input type="text" id="firstName"  class="form-control form-control-lg" name="FirstName"   />
                     <label class="form-label" for="firstName">First Name</label>
 
                     <?php
@@ -85,6 +85,7 @@ if (isset ($_GET['err'])) {
                     <input type="email" id="emailAddress" class="form-control form-control-lg" name="Email" />
                     <label class="form-label" for="email">Email</label>
                     <?php
+
                     if (isset ($err['Email'])) {
                       echo "<span style='color:red'>$err[Email]</span> <br>";
                     }
@@ -160,7 +161,7 @@ if (isset ($_GET['err'])) {
         </div>
         <div class="mt-4 pt-2">
 
-          <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+          <input class="btn btn-primary btn-lg" type="submit" value="Submit" name="register" />
         </div>
 
         </form>
