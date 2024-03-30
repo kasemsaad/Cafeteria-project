@@ -1,12 +1,11 @@
 <?php
 require "connection.php";
 echo "<h1>Hello</h1>";
-if (isset($_POST['register'])) {
-$FirstName = validation($_POST["FirstName"]);
-$LastName = validation($_POST["LastName"]);
+if (isset($_POST['addUser'])) {
+$Name = validation($_POST["Name"]);
 $Email = $_POST["Email"];
 $Room = $_POST["Room"];
-$Phone = $_POST["Phone"];
+$Ext = $_POST["Ext"];
 $Password = $_POST["Password"];
 $ConPassword = $_POST["ConPassword"];
 $role = "User";
@@ -16,14 +15,10 @@ move_uploaded_file($From, "./images/" . $Img);
 /////////////////////////////////////////////////////////
 $err = [];
 
-if (strlen($FirstName) < 2) {
-    $err['FirstName'] = " Name is Not Valid";
-}
-if (strlen($LastName) < 2) {
-    $err['LastName'] = " Name is Not Valid";
+if (strlen($Name) < 2) {
+    $err['Name'] = " Name is Not Valid";
 }
 
-    
 if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
     $err['Email'] = " is not valid";
 }
@@ -31,8 +26,8 @@ if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
 if (!is_numeric($Room)) {
     $err['Room'] = " is not number ";
 }
-if (!is_numeric($Phone) || strlen($Phone) != 11) {
-    $err["Phone"] = "Phone number must be numeric and have 11 digits";
+if (!is_numeric($Ext) ) {
+    $err["Ext"] = "Ext must be Number Room";
 }
 $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/';
 
@@ -44,42 +39,40 @@ if ($Password !== $ConPassword) {
     $err["ConPassword"] = "Passwords do not match";
 }
 if (count($err) > 0) {
-    header("location:Register.php?err=" . json_encode($err));
+    header("location:addUser.php?err=" . json_encode($err));
 } else {
-
-
 
     try {
         $DB = new db();
         $hashed_password = password_hash($Password, PASSWORD_DEFAULT);
-
-        $values = [$FirstName, $LastName, $Room, $Phone, $Password, $role, $Img];
-        $DB->insert_data("customers", "first_name, last_name,email, room_no, Phone, password, role, profile_image", [$FirstName, $LastName, $Email, $Room, $Phone, $hashed_password, $role, $Img]);
-
-
+    
+        $values = [$Name, $Email, $hashed_password, $Room, $Ext, $role, $Img]; // Removed extra comma after $Name
+        $DB->insert_data("customers", "name, email, password, role, room_no, ext, profile_image", $values);
+        echo '<script>alert("Data inserted successfully");</script>';
     } catch (PDOException $e) {
         die ("Connection failed: " . $e->getMessage());
     }
+    
 }}
 else if (isset($_POST["login"])) {
     try {
         $Email = $_POST['Email'];
         $Password = $_POST['Password'];
-        
+        // $role = $_POST['Password'];
+        // $role = "User";
         $db = new db();
         $res = $db->get_data("customers", "email = ?", array($Email));  
 
-        if (!empty($res) && password_verify($Password,$res[0]['password']) ){
-            
+        if (($res[0]['role']=="Admin")&& password_verify($Password,$res[0]['password'])){
             setcookie("Email", $Email);
-            header("location:index.php?success"); /////////////enter after check
+            header("location:addUser.php?success"); /////////////enter after check
         } else {
 
-            header("location:index.php?err=1");
+            header("location:index.php?err=login");
         }
     } catch (mysqli_sql_exception $e) {
         // Handle any database exceptions
-        header("location:index.php?err=44444");
+        header("location:index.php?err=mysqli_sql_exception");
         exit();
     }
 }

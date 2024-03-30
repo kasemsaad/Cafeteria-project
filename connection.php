@@ -34,13 +34,12 @@ class db
 
             $customers = "CREATE TABLE IF NOT EXISTS customers (
                 customer_id INT AUTO_INCREMENT PRIMARY KEY,
-                first_name VARCHAR(50) NOT NULL,
-                last_name VARCHAR(50) NOT NULL,
+                name VARCHAR(50) NOT NULL,
                 email VARCHAR(100) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
                 role ENUM('User', 'Admin') NOT NULL,
                 room_no INT,
-                phone VARCHAR(20),
+                ext INT,
                 profile_image VARCHAR(255),
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -115,7 +114,7 @@ class db
         
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-     function  insert_data($table, $cols, $values) {
+    function insert_data($table, $cols, $values) {
         try {
             $valuesch = implode(', ', array_fill(0, count($values), '?'));
             $query = "INSERT INTO $table ($cols) VALUES ($valuesch)";
@@ -123,12 +122,9 @@ class db
             $statement->execute($values);
             return true;
         } catch (PDOException $e) {
-            // die("Execution failed: " . $e->getMessage());
-                        header("location:Register.php");
-                        
-
+            header("location:index.php?error=insert_failed");
+            exit;
         }
-        
     }
 
     function getData_UseEmail($table, $cols, $email) {
@@ -142,7 +138,7 @@ class db
         } catch (PDOException $e) {
 
             // die("Execution failed: " . $e->getMessage());
-            header("location:Register.php?err=" . json_encode($e->getMessage()));
+            header("location:addUser.php?err=" . json_encode($e->getMessage()));
 
         }
     }
