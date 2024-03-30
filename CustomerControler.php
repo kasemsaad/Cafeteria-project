@@ -1,6 +1,8 @@
 <?php
+// if (!isset($_COOKIE['email'])) {
+//     header("location:index.php");
+//   }
 require "connection.php";
-echo "<h1>Hello</h1>";
 if (isset($_POST['addUser'])) {
 $Name = validation($_POST["Name"]);
 $Email = $_POST["Email"];
@@ -48,6 +50,7 @@ if (count($err) > 0) {
     
         $values = [$Name, $Email, $hashed_password, $Room, $Ext, $role, $Img]; // Removed extra comma after $Name
         $DB->insert_data("customers", "name, email, password, role, room_no, ext, profile_image", $values);
+        header("location:viewAllUsers.php?success"); 
         echo '<script>alert("Data inserted successfully");</script>';
     } catch (PDOException $e) {
         die ("Connection failed: " . $e->getMessage());
