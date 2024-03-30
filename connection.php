@@ -1,4 +1,7 @@
 <?php
+// if (!isset($_COOKIE['email'])) {
+//     header("location:index.php");
+//   }
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
@@ -114,6 +117,19 @@ class db
         
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    function get_dataone($table, $condition = "")
+    {
+        // Construct the query with optional condition
+        $query = "SELECT * FROM $table";
+        if (!empty($condition)) {
+            $query .= " WHERE $condition";
+        }
+        
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+        
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
     function insert_data($table, $cols, $values) {
         try {
             $valuesch = implode(', ', array_fill(0, count($values), '?'));
@@ -142,10 +158,47 @@ class db
 
         }
     }
+ 
+    function delete_data($table, $cond) {
+        try {
+            $query = "DELETE FROM $table WHERE $cond";
+            $statement = $this->connection->prepare($query);
+            $statement->execute();
+            return $statement->rowCount();
+        } catch (PDOException $e) {
+            // Log the error
+            error_log('Error deleting data: ' . $e->getMessage());
+            // Redirect to an error page with a generic error message
+            header("location:viewAllUsers.php?err=" . json_encode($e->getMessage()));
+    exit; // Terminate script execution after redirect
+        }
 
 
-
-
+        
+    }
+  
+    public function update_data($table_name, $data, $condition) {
+        try {
+            $set_values = [];
+            foreach ($data as $key => $value) {
+                $set_values[] = "$key = '$value'";
+            }
+            $set_values_str = implode(', ', $set_values);
+            $query = "UPDATE $table_name SET $set_values_str WHERE $condition";
+            
+            $statement = $this->connection->prepare($query);
+            $result = $statement->execute();
+            
+            if (!$result) {
+                throw new PDOException("Error executing query: " . $statement->errorInfo()[2]);
+            }
+    
+            return $statement->rowCount();
+        } catch (PDOException $e) {
+            header("location:viewAllUsers.php?err=" . urlencode($e->getMessage()));
+        }
+    }
+    
 }
 
 $db = new db(); 
