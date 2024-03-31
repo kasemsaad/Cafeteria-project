@@ -143,6 +143,7 @@ body {
 .container .heading {
   text-align: center;
   margin-bottom: 20px;
+  margin-top: 40px;
   font-size: 40px;
   text-transform: uppercase;
   color: var(--black);
@@ -301,4 +302,152 @@ body {
   .container .products .box-container .box img {
     height: 200px;
   }
+}
+
+.container .shopping-order .order-btn {
+  margin-top: 20px; /* Increase the margin between the table bottom and the button */
+  text-align: center;
+}
+
+.container .shopping-order .order-btn a {
+  display: inline-block;
+  padding: 10px 30px;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--white);
+  border-radius: 5px;
+  text-transform: capitalize;
+  background-color: var(--blue);
+}
+
+.container .shopping-order .order-btn a:hover {
+  background-color: var(--black);
+}
+
+.form-row label {
+  display: block; /* Make labels display as block elements */
+  font-size: 16px; /* Adjust font size */
+  font-weight: bold;
+  margin-top: 10px; /* Add spacing between labels and form elements */
+  margin-bottom: 10px; /* Add spacing between labels and form elements */
+  color: var(--black); /* Set label color */
+}
+.orders-btn input[type="submit"] {
+  display: inline-block !important; /* Ensure the button is displayed inline */
+  visibility: visible !important; /* Ensure the button is visible */
+  opacity: 1 !important; /* Ensure full opacity */
+}
+
+.form-row {
+  padding-left: 10px;
+}
+#notes {
+  width: 840px;
+  padding-left: 10px;
+  padding-top: 5px; /* Set the width of the text area to 100% */
+  height: 100px;
+  margin: 20 0 20 0; /* Add margin bottom for spacing */
+}
+
+#roomlist {
+  width: 200px; /* Set the width of the combo box to 50% */
+  height: 30px;
+  padding-left: 10px;
+  color: #5b5757;
+  margin: 10 0 20 0; /* Add margin bottom for spacing */
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+}
+
+.navbar-left a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  padding-right: 30px;
+}
+
+.navbar-right a {
+  color: #f39c12;
+  padding-left: 20px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.latest-order .box-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.latest-order .box-container .box {
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: var(--box-shadow);
+  position: relative;
+  padding: 10px;
+  background-color: var(--white);
+  width: 200px; /* Adjust the width to make it smaller */
+}
+
+.latest-order .box-container .box img {
+  height: 150px; /* Adjust the height of the image */
+}
+
+ .latest-order .box-container .box .name {
+  font-size: 16px; /* Reduce the font size */
+  color: var(--black);
+  padding: 5px 0;
+}
+
+.form {
+  padding-right: 300px;
+  position: relative;
+}
+
+.form .fa-search {
+  position: absolute;
+  top: 12px;
+  left: 18px;
+  color: #383a3c;
+}
+
+.form-input {
+  height: 40px;
+  width: 400px;
+  text-indent: 33px;
+  border-radius: 10px;
+  padding-left: 20px;
+}
+
+.form-input:focus {
+  box-shadow: none;
+  border: none;
 }
