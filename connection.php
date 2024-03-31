@@ -14,7 +14,8 @@ class db
     private $server = 'localhost';
     private $username = 'root';
     private $password = '';
-    private $database = 'Cafeteria';
+
+    private $database = 'cafeteria';
     private $connection;
 
     function __construct()
@@ -97,6 +98,27 @@ class db
             $this->connection->query($order_details);
 
 
+
+            
+            $stmt = $this->connection->query("CREATE database if not exists {$this->database}");
+            $stmt->execute();
+
+            $this->connection->query("USE {$this->database}");
+
+            // insert schema
+            $CustomerTable = "CREATE table if not exists customers (
+                CID INT AUTO_INCREMENT PRIMARY KEY,
+                FirstName VARCHAR(50),
+                LastName VARCHAR(50),
+                Email VARCHAR(100),
+                Phone VARCHAR(20),
+                Address VARCHAR(255),
+                Password VARCHAR(255)
+            )";
+            $this->connection->query($CustomerTable);
+
+
+            
 
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());
@@ -193,3 +215,5 @@ class db
 $db = new db();
 echo "Connected";
 ?>
+
+}
