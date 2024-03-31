@@ -4,7 +4,8 @@ require "connection.php";
 //     header("location:index.php");
 //   }
 $db = new db();
-$data = $db->get_data("customers");
+// $data = $db->get_data("customers");
+$data = $db->get_dataone("customers", " role='User' ");
 
 ?>
 <head>
@@ -53,7 +54,7 @@ $data = $db->get_data("customers");
                                         </td>
                                         <td>
                                             <a class="btn btn-primary" href="viewUser.php?id=<?php echo $row['customer_id'];?>">view</a>
-                                            <a class="btn btn-info" href="edit.php?id=<?php echo $row['customer_id'];?>">edit</a>
+                                            <a class="btn btn-info" href="editUser.php?id=<?php echo $row['customer_id'];?>">edit</a>
                                             <a class="btn btn-danger" href="delete.php?id=<?php echo $row['customer_id']; ?>">Delete</a>
 
                                         </td>

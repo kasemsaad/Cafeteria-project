@@ -51,9 +51,8 @@ if (count($err) > 0) {
         $values = [$Name, $Email, $hashed_password, $Room, $Ext, $role, $Img]; // Removed extra comma after $Name
         $DB->insert_data("customers", "name, email, password, role, room_no, ext, profile_image", $values);
         header("location:viewAllUsers.php?success"); 
-        echo '<script>alert("Data inserted successfully");</script>';
     } catch (PDOException $e) {
-        die ("Connection failed: " . $e->getMessage());
+        header("location:viewAllUsers.php?err=". $e->getMessage());
     }
     
 }}

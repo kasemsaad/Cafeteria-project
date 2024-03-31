@@ -156,6 +156,8 @@ if (isset ($_GET['err'])) {
 
           <input class="btn btn-primary btn-lg" type="submit" value="Submit" name="addUser" />
           <input class="btn btn-primary btn-lg" type="reset" value="Reset" name="Reset" />
+          <a class="btn btn-primary btn-lg" href="viewAllUsers.php">Back</a>
+
 
         </div>
 
