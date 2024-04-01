@@ -19,7 +19,7 @@ $orders = [];
 
 // Fetch orders based on the specified date range
 if (!empty($from_date) && !empty($to_date)) {
-    $stmt = $conn->prepare("SELECT * FROM orders WHERE customer_id = ? AND created_at BETWEEN ? AND ?");
+    $stmt = $conn->prepare("SELECT * FROM orders WHERE customer_id = ? AND created_at BETWEEN ? AND ? AND order_status != 'Pending';");
     $stmt->execute([$_SESSION['customer_id'], $from_date, $to_date]);
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -94,7 +94,7 @@ if (!empty($from_date) && !empty($to_date)) {
          <td><?php echo $order['order_status']; ?></td>
          <?php $all_order_total+=$order['total_amount']; ?>
          <td>$<?php echo $order['total_amount']; ?></td>
-         <?php if ($order['order_status'] === 'Pending'): ?>
+         <?php if ($order['order_status'] === 'In Progress'): ?>
             <td>
                 <button class="cancel-order" data-order-id="<?php echo $order['order_id']; ?>">Cancel</button>
             <?php endif; ?>

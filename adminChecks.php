@@ -88,7 +88,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $user_orders=[];
             // Fetch orders for the current user
             if (!empty($from_date) && !empty($to_date)) {
-                $stmt = $conn->prepare("SELECT * FROM orders WHERE customer_id = ? AND DATE(created_at) BETWEEN ? AND ?");
+                $stmt = $conn->prepare("SELECT * FROM orders WHERE customer_id = ? AND DATE(created_at) BETWEEN ? AND ? AND order_status != 'Pending' ");
                 $stmt->execute([$user['customer_id'], $from_date, $to_date]);
                 $user_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }

@@ -35,9 +35,9 @@ if (!$order) {
 }
 
 // Check if the order status is already cancelled or not pending
-if ($order['order_status'] !== 'Pending') {
+if ($order['order_status'] !== 'In Progress') {
     // If the order status is not pending, redirect to an error page or display an error message
-    echo "Order cannot be cancelled as it is not in pending status";
+    echo "Order cannot be cancelled as it is not in In Progress status";
     exit();
 }
 

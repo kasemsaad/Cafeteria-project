@@ -7,7 +7,7 @@ $db = new db();
 $conn = $db->get_connection();
 
 // Fetch pending orders
-$stmt = $conn->prepare("SELECT * FROM orders WHERE order_status = 'Pending'");
+$stmt = $conn->prepare("SELECT * FROM orders WHERE order_status = 'In Progress'");
 $stmt->execute();
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -20,6 +20,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Pending Orders</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+       body {
+    background-image: url("images/channels4_profile.jpg");
+}
+
      /* CSS styles for user container and form */
      .user-container {
     position: fixed;
@@ -34,9 +38,9 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
         .date-filter-form {
-            position: fixed;
-            top: 30px;
-            left: 300px; /* Adjust left position */
+           
+            top: 60px;
+           
             display: flex;
             align-items: center;
         }
@@ -50,34 +54,46 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body>
-<div class="user-container">
-    <?php
+
+
+<?php
     // Fetch customer name and image using customer_id
     $stmt = $conn->prepare("SELECT first_name, last_name, profile_image FROM customers WHERE customer_id = ?");
     $stmt->execute([$_SESSION['customer_id']]);
     $login_user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Check if user data is retrieved successfully
-    if ($login_user) {
-        // Display user information
-        ?>
-        <div class="user-info">
-            <p>Welcome, <?php echo $login_user['first_name'] . ' ' . $login_user['last_name']; ?></p>
-            <!-- Add more user info here if needed -->
-        </div>
-        <div class="user-image">
-            <img style="    width: 70px;
-    border-radius: 50px;
-                    }" src="images/<?php echo $login_user['profile_image']; ?>" alt="User Image">
-            <!-- Assuming profile_image is the path to the user's image -->
-        </div>
-    <?php } else {
-        // Display a default message if user data is not found
-        ?>
-        <p>User data not found.</p>
-    <?php } ?>
+    
+  ?>
+
+<div class="navbar">
+   <div class="navbar-left">
+      <a href="userMakeOrder.php">Home</a>
+      <a href="#">Products</a>
+      <a href="#">Users</a>
+      <a href="Orders_chicks.php">Manual Order</a>
+      <a href="adminChicks.php">Chicks</a>
+      
+   </div>
+   <div class="row height d-flex justify-content-center align-items-center">
+     <div class="col-md-6">
+       </div>
+   </div>
+   <div class="navbar-right">
+      <div class="user-info">
+      <img src="images/<?php echo $login_user['profile_image']; ?>" alt="User Photo" style=" width: 40px;
+    height: 40px;
+    border-radius: 50%;">
+         <span><?php echo $login_user['first_name'] . ' ' . $login_user['last_name']; ?></span>
+         <a href="logout.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+
+      </div>
+   </div>
+</div>
+
+  
 
 <!-- Form to specify date range -->
+<div>
 <form method="post" class="date-filter-form">
     <label for="from_date">From:</label>
     <input type="date" id="from_date" name="from_date" value="<?php echo htmlentities($from_date); ?>">
@@ -85,7 +101,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <input type="date" id="to_date" name="to_date" value="<?php echo htmlentities($to_date); ?>">
     <button type="submit">Filter</button>
 </form>
-    </div>
+</div>
 <div class="container">
     <?php foreach ($orders as $order): ?>
         <div class="row justify-content-center">
@@ -106,7 +122,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </thead>
                     <tbody>
                     <tr>
-                        <td><?php echo $order['order_date']; ?></td>
+                        <td><?php echo $order['created_at']; ?></td>
                         <td><?php echo getCustomerName($conn, $order['customer_id']); ?></td>
                         <td><?php echo $order['room_number']; ?></td>
                         <td><?php echo getExt($conn, $order['customer_id']); ?></td>
