@@ -60,12 +60,12 @@ if (isset($_GET['err'])) {
               </div>
 
 
+              <div class="mt-4 pt-2">
+      
+                <input class="btn btn-primary btn-lg" type="submit" value="Submit" name="forgetpassword" />
+              </div>
           </div>
 
-        </div>
-        <div class="mt-4 pt-2">
-
-          <input class="btn btn-primary btn-lg" type="submit" value="Submit" name="forgetpassword" />
         </div>
 
         </form>
