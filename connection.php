@@ -1,7 +1,5 @@
 <?php
-// if (!isset($_COOKIE['email'])) {
-//     header("location:index.php");
-//   }
+
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
@@ -14,7 +12,6 @@ class db
     private $server = 'localhost';
     private $username = 'root';
     private $password = '';
-
     private $database = 'cafeteria';
     private $connection;
 
@@ -46,6 +43,7 @@ class db
                 room_no INT,
                 ext INT,
                 profile_image VARCHAR(255),
+                resetcode INT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (room_no) REFERENCES rooms(room_no) ON DELETE CASCADE
@@ -99,7 +97,7 @@ class db
 
 
 
-            
+
             $stmt = $this->connection->query("CREATE database if not exists {$this->database}");
             $stmt->execute();
 
@@ -118,7 +116,7 @@ class db
             $this->connection->query($CustomerTable);
 
 
-            
+
 
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());
@@ -141,7 +139,7 @@ class db
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-    function get_dataone($table, $condition =" ")
+    function get_dataone($table, $condition = " ")
     {
         $query = "SELECT * FROM $table";
         if (!empty($condition)) {
@@ -205,6 +203,7 @@ class db
             return $statement->execute();
         } catch (PDOException $e) {
             header("location:viewAllUsers.php?err=" . urlencode($e->getMessage()));
+            // die ("Connection failed: " . $e->getMessage());
             exit;
         }
     }
@@ -212,8 +211,4 @@ class db
 
 }
 
-$db = new db();
-echo "Connected";
 ?>
-
-}

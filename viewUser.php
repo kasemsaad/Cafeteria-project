@@ -1,13 +1,15 @@
 <?php
 require "connection.php";
-// if (!isset($_COOKIE['email'])) {
-//     header("location:index.php");
-//   }
-
+if (!isset($_COOKIE['Email'])) {
+    header("location:index.php");
+} elseif ($_COOKIE["role"] !== "Admin") {
+    header("location:home.php"); ////////// home
+}
 $id = $_GET['id'];
 $db = new db();
 $data = $db->get_dataone("customers", "customer_id=$id");
 ?>
+
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -16,6 +18,27 @@ $data = $db->get_dataone("customers", "customer_id=$id");
         crossorigin="anonymous"></script>
     <title>User</title>
 </head>
+<style>
+    body {
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-image: url("./images/19266-Main.jpg");
+    }
+
+
+    .card-registration .select-input.form-control[readonly]:not([disabled]) {
+        font-size: 1rem;
+        line-height: 2.15;
+        padding-left: .75em;
+        padding-right: .75em;
+
+    }
+
+    .card-registration .select-arrow {
+        top: 13px;
+    }
+</style>
 
 <body>
     <div class="container mt-5">
@@ -53,11 +76,11 @@ $data = $db->get_dataone("customers", "customer_id=$id");
                                         <td>
                                             <?php echo $row['room_no']; ?>
                                         </td>
-                                            <td>
-                                                <?php echo $row['ext']; ?>
-                                            </td>
                                         <td>
-                                        <img src='./images/<?php echo $row['profile_image']; ?>' width='100'>                
+                                            <?php echo $row['ext']; ?>
+                                        </td>
+                                        <td>
+                                            <img src='./images/<?php echo $row['profile_image']; ?>' width='100'>
                                         </td>
                                         <td>
                                         </td>
@@ -70,4 +93,3 @@ $data = $db->get_dataone("customers", "customer_id=$id");
             </div>
         </div>
     </div>
-

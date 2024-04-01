@@ -1,8 +1,10 @@
 <?php
 require "connection.php";
-// if (!isset($_COOKIE['email'])) {
-//     header("location:index.php");
-//   }
+if (!isset($_COOKIE['Email'])) {
+  header("location:index.php");
+} elseif ($_COOKIE["role"] !== "Admin") {
+  header("location:home.php"); ////////// home
+}
 $err = [];
 if (isset($_GET['err'])) {
   $err = json_decode($_GET['err'], true);
@@ -11,6 +13,8 @@ if (isset($_GET['err'])) {
 $id = $_GET['id'];
 $db = new db();
 $data = $db->get_dataone("customers", "customer_id=$id");
+$dataRoom = $db->get_data("rooms");
+$dataExt = $db->get_data("rooms", "ext");
 ?>
 
 <head>
@@ -22,16 +26,19 @@ $data = $db->get_dataone("customers", "customer_id=$id");
   <title>Add Users</title>
 </head>
 <style>
-  .gradient-custom {
-    background: #f093fb;
-    background: -webkit-linear-gradient(to bottom right, rgba(240, 147, 251, 1), rgba(245, 87, 108, 1));
-    background: linear-gradient(to bottom right, rgba(240, 147, 251, 1), rgba(245, 87, 108, 1))
+  body {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: url("./images/19266-Main.jpg");
   }
+
   .card-registration .select-input.form-control[readonly]:not([disabled]) {
     font-size: 1rem;
     line-height: 2.15;
     padding-left: .75em;
     padding-right: .75em;
+
   }
 
   .card-registration .select-arrow {
@@ -80,50 +87,55 @@ $data = $db->get_dataone("customers", "customer_id=$id");
 
                   <div class="col-md-6 mb-4 pb-2">
                     <div class="form-outline">
-                      <input type="tel" id="Room" name="Room" class="form-control form-control-lg" name="Room" value=<?php echo $use['room_no'] ?> />
-                      <label class="form-label" for="Room">Room</label>
-                      <?php
-                      if (isset($err['Room'])) {
-                        echo "<span style='color:red'>$err[Room]</span> <br>";
-                      }
-                      ?>
+                      <select name="Room" class="form-control form-control-lg">
+                        <option value="">Select Room</option>
+                        <?php foreach ($dataRoom as $row): ?>
+                          <option value="<?php echo $row['room_no']; ?>">
+                            <?php echo $row['room_no']; ?>
+                          </option>
+                        <?php endforeach; ?>
+                      </select>
+                      <label class="form-label" for="Room">Room*</label>
                     </div>
                   </div>
 
                   <div class="col-md-6 mb-4 pb-2">
                     <div class="form-outline">
-                      <input type="tel" id="Ext" class="form-control form-control-lg" name="Ext" value=<?php echo $use['ext'] ?> />
-                      <label class="form-label" for="Ext">Ext</label>
-                      <?php
-                      if (isset($err['Ext'])) {
-                        echo "<span style='color:red'>$err[Ext]</span> <br>";
-                      } ?>
-                    </div>
-                  </div>
-
-
-                  <div class="col-md-6 mb-4 pb-2">
-                    <div class="form-outline">
-                      <input type="file" id="CustomerImage" class="form-control form-control-lg" name="CustomerImage"
-                        value=<?php echo $use['profile_image'] ?> />
-                      <label class="form-label" for="profileImage">Profile Image</label>
+                      <select name="Ext" class="form-control form-control-lg">
+                        <option value="">Select Ext</option>
+                        <?php foreach ($dataExt as $row): ?>
+                          <option value="<?php echo $row['ext']; ?>">
+                            <?php echo $row['ext']; ?>
+                          </option>
+                        <?php endforeach; ?>
+                      </select>
+                      <label class="form-label" for="Ext">Ext*</label>
                     </div>
                   </div>
 
                 </div>
+                <div class="col-md-6 mb-4 pb-2">
+                  <div class="form-outline">
+                    <input type="file" id="CustomerImage" class="form-control form-control-lg" name="CustomerImage"
+                      value=<?php echo $use['profile_image'] ?> />
+                    <label class="form-label" for="profileImage">Profile Image</label>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-2">
+                <?php endforeach; ?>
+                <input class="btn btn-primary btn-lg" type="submit" value="save" />
+                <input class="btn btn-primary btn-lg" type="reset" value="Reset" name="Reset" />
+              </div>
             </div>
-
-          </div>
-          <div class="mt-4 pt-2">
-          <?php endforeach; ?>
-          <input class="btn btn-primary btn-lg" type="submit" value="save" />
-          <input class="btn btn-primary btn-lg" type="reset" value="Reset" name="Reset" />
         </div>
+
       </div>
-
-
     </div>
-    </form>
+
+
+  </div>
+  </form>
   </div>
   </div>
   </div>

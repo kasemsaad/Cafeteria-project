@@ -48,7 +48,7 @@ if (isset($_GET['err'])) {
 
                                 <div class="col-md-6 mb-4">
                                     <div class="form-outline">
-                                        <input type="text" type="email" name="Email" placeholder="Email"
+                                        <input  type="email" name="Email" placeholder="Email"
                                             class="form-control form-control-lg" />
                                         <label class="form-label" for="email">Email</label>
 

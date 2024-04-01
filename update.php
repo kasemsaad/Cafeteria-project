@@ -1,7 +1,9 @@
-<?php  
-// if (!isset($_COOKIE['email'])) {
-//     header("location:index.php");
-//   }
+<?php
+if (!isset($_COOKIE['Email'])) {
+    header("location:index.php");
+} elseif ($_COOKIE["role"] !== "Admin") {
+    header("location:home.php"); ////////// home
+}
 $id = $_GET['id'];
 
 require 'connection.php';
@@ -26,7 +28,7 @@ if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
 if (!is_numeric($Room)) {
     $err['Room'] = " is not number ";
 }
-if (!is_numeric($Ext) ) {
+if (!is_numeric($Ext)) {
     $err["Ext"] = "Ext must be Number Room";
 }
 
@@ -38,16 +40,14 @@ if (count($err) > 0) {
     try {
 
 
-$id=$_GET['id'];
-$db=new db();
-$upd=" name='$Name',email='$Email',room_no='$Room' ,ext='$Ext', profile_image='$Img' ";
-$res=$db->update_data("customers",$upd,"customer_id=$id");
-header("location:viewAllUsers.php?success"); 
-} catch (PDOException $e) {
-    header("location:editUser.php?id=$id?err=". $e->getMessage()); 
-
-    // die ("Connection failed: " . $e->getMessage());
-}
+        $id = $_GET['id'];
+        $db = new db();
+        $upd = " name='$Name',email='$Email',room_no='$Room' ,ext='$Ext', profile_image='$Img' ";
+        $res = $db->update_data("customers", $upd, "customer_id=$id");
+        header("location:viewAllUsers.php?success");
+    } catch (PDOException $e) {
+        header("location:editUser.php?id=$id?err=" . $e->getMessage());
+    }
 
 }
 
