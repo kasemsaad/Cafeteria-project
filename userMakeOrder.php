@@ -219,7 +219,7 @@ if(!empty($message)){
 <div class="navbar">
    <div class="navbar-left">
       <a href="userMakeOrder.php">Home</a>
-      <a href="listUserOrders.php">My Orders</a>
+      <a href="my_orders.php">My Orders</a>
    </div>
    <div class="row height d-flex justify-content-center align-items-center">
      <div class="col-md-6">
@@ -430,4 +430,3 @@ $stmt_update_total->execute([$grand_total, $order_id]);
 
 </body>
 </html>
-
