@@ -43,23 +43,41 @@ if (!empty($from_date) && !empty($to_date)) {
     $stmt->execute([$_SESSION['customer_id']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Check if user data is retrieved successfully
-    if ($user) {
-        // Display user information
-        ?>
-        <div class="user-info">
-            <p>Welcome, <?php echo $user['name']; ?></p>
-            <!-- Add more user info here if needed -->
-        </div>
-        <div class="user-image">
-            <img src="images/<?php echo $user['profile_image']; ?>" alt="User Image">
-            <!-- Assuming profile_image is the path to the user's image -->
-        </div>
-    <?php } else {
-        // Display a default message if user data is not found
-        ?>
-        <p>User data not found.</p>
-    <?php } ?>
+   ?>
+   <div class="navbar" style=" display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 10px;
+   background-color: #333;
+   color: #fff; width:100%;">
+   <div class="navbar-left" style=" display: flex;
+   align-items: center;
+   padding-left: 30px;">
+      <a style="color: #fff;
+   text-decoration: none;
+   margin-right: 20px;" href="userMakeOrder.php">Home</a>
+      <a style="color: #fff;
+   text-decoration: none;
+   margin-right: 20px;" href="listUserOrders.php">My Orders</a>
+   </div>
+   <div class="row height d-flex justify-content-center align-items-center">
+     
+   </div>
+   <div class="navbar-right" style="display: flex;
+  align-items: center;
+  padding-right: 30px;">
+      <div class="user-info" style=" display: flex;
+   align-items: center;">
+      <img style="width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;" src="images/<?php echo $user['profile_image']; ?>" alt="User Photo">
+         <span><?php echo $user['name']; ?></span>
+      </div>
+      <a style=" color: #f39c12;
+   padding-left: 20px;" href="logout.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+   </div>
+</div>
 
 
 </div>

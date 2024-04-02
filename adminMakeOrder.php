@@ -24,7 +24,14 @@ if (isset($_GET['logout'])) {
 }
 
 $message = [];
+// Fetch all customers
+$stmt_customers = $conn->prepare("SELECT * FROM customers");
+$stmt_customers->execute();
+$customers = $stmt_customers->fetchAll(PDO::FETCH_ASSOC);
 
+if(isset($_POST['selected_customer'])) {
+    $customer_id = $_POST['selected_customer'];
+} 
 // Check if the order is already submitted
 $stmt_order = $conn->prepare("SELECT order_id FROM orders WHERE customer_id = ? AND order_status = 'Pending'");
 $stmt_order->execute([$customer_id]);
@@ -275,7 +282,18 @@ if(!empty($message)){
    </div>
 
 </div>
-
+<!-- Update the HTML form with the dropdown menu -->
+<form method="post">
+    <label for="selected_customer">Select Customer:</label>
+    <select name="selected_customer" id="selected_customer">
+        <?php foreach ($customers as $customer): ?>
+            <option value="<?php echo $customer['customer_id']; ?>" <?php echo ($customer_id == $customer['customer_id']) ? 'selected' : ''; ?>>
+                <?php echo $customer['name']; ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+    <input type="submit" value="Select" name="select_customer">
+</form>
 <div class="shopping-orders">
 
    <h1 class="heading">Shopping Orders</h1>

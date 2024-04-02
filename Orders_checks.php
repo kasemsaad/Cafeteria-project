@@ -67,11 +67,11 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <div class="navbar">
    <div class="navbar-left">
-      <a href="userMakeOrder.php">Home</a>
+      <a href="Orders_checks.php">Home</a>
       <a href="#">Products</a>
       <a href="#">Users</a>
-      <a href="Orders_chicks.php">Manual Order</a>
-      <a href="adminChicks.php">Chicks</a>
+      <a href=" userMakeOrder.php">Manual Order</a>
+      <a href="adminChecks.php">Chicks</a>
       
    </div>
    <div class="row height d-flex justify-content-center align-items-center">
@@ -94,19 +94,20 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!-- Form to specify date range -->
 <div>
-<form method="post" class="date-filter-form">
-    <label for="from_date">From:</label>
-    <input type="date" id="from_date" name="from_date" value="<?php echo htmlentities($from_date); ?>">
-    <label for="to_date">To:</label>
-    <input type="date" id="to_date" name="to_date" value="<?php echo htmlentities($to_date); ?>">
-    <button type="submit">Filter</button>
-</form>
+
 </div>
 <div class="container">
     <?php foreach ($orders as $order): ?>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <h1>Orders</h1>
+                <form method="post" class="date-filter-form">
+    <label for="from_date">From:</label>
+    <input type="date" id="from_date" name="from_date" value="<?php echo htmlentities($from_date); ?>">
+    <label for="to_date">To:</label>
+    <input type="date" id="to_date" name="to_date" value="<?php echo htmlentities($to_date); ?>">
+    <button type="submit">Filter</button>
+</form>
                 <table class="table table-bordered text-center">
                     <thead class="thead-dark">
                     <tr>
@@ -166,7 +167,7 @@ function getCustomerName($conn, $customer_id) {
     $stmt = $conn->prepare("SELECT name FROM customers WHERE customer_id = ?");
     $stmt->execute([$customer_id]);
     $customer = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $customer['last_name'];
+    return $customer['name'];
 }
 
 function getExt($conn, $customer_id) {
