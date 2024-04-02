@@ -59,11 +59,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php
     // Fetch customer name and image using customer_id
     $stmt = $conn->prepare("SELECT name, profile_image FROM customers WHERE customer_id = ?");
-<<<<<<< HEAD
     $stmt->execute([$_COOKIE['customer_id']]);
-=======
-    $stmt->execute([$_SESSION['customer_id']]);
->>>>>>> 0234e42f838691d478a9dceb2fe8b919a0983908
     $login_user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     

@@ -3,7 +3,7 @@ require 'connection.php';
 if (!isset($_COOKIE['Email'])) {
   header("location:index.php");
 } elseif ($_COOKIE["role"] !== "Admin") {
-  header("location:home.php"); ////////// home
+  header("location:index.php"); ////////// userMakeOrder
 }
 $err = [];
 if (isset($_GET['err'])) {

@@ -4,11 +4,7 @@ include 'connection.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['customer_id'])) {
-<<<<<<< HEAD
     header('location: index.php');//edit it !!!!!!!!!!!!!!!!!!!!
-=======
-    header('location: login.php');//edit it !!!!!!!!!!!!!!!!!!!!
->>>>>>> 0234e42f838691d478a9dceb2fe8b919a0983908
     exit();
 }
 

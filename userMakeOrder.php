@@ -11,18 +11,20 @@ $conn = $db->get_connection();
 // }
 $customer_id = 1;//$_SESSION['customer_id']; // For testing, replace with actual customer_id when using sessions
 
-if (!isset($customer_id)) {
-    header('location: login.php');
-    exit();
-}
+// if (!isset($customer_id)) {
+//     header('location: index.php');
+//     exit();
+// }
 
-if (isset($_GET['logout'])) {
-    unset($_SESSION['customer_id']);
-    session_destroy();
-    header('location: login.php');
-    exit();
-}
-
+// if (isset($_GET['logout'])) {
+//     unset($_SESSION['customer_id']);
+//     session_destroy();
+//     header('location: index.php');
+//     exit();
+// }
+if (!isset($_COOKIE['Email'])) {
+   header("location:index.php");
+ } 
 $message = [];
 
 // Check if the order is already submitted
