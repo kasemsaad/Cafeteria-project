@@ -430,4 +430,3 @@ $stmt_update_total->execute([$grand_total, $order_id]);
 
 </body>
 </html>
-
