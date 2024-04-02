@@ -16,7 +16,11 @@ if ($username === 'admin' && $password === 'admin') {
 } else {
     // If credentials are invalid, redirect back to the login page with an error message
     $_SESSION['login_error'] = 'Invalid username or password';
+<<<<<<< HEAD
     header('location: index.php');
+=======
+    header('location: login.php');
+>>>>>>> 0234e42f838691d478a9dceb2fe8b919a0983908
     exit();
 }
 ?>

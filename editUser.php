@@ -14,7 +14,7 @@ $id = $_GET['id'];
 $db = new db();
 $data = $db->get_dataone("customers", "customer_id=$id");
 $dataRoom = $db->get_data("rooms");
-$dataExt = $db->get_data("rooms", "ext");
+$dataExt = $db->ext();
 ?>
 
 <head>

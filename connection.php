@@ -7,6 +7,7 @@ $err = [];
 if (isset($_GET['err'])) {
     $err = json_decode($_GET['err'], true);
 }
+
 class db
 {
     private $server = 'localhost';
@@ -36,6 +37,7 @@ class db
 
             $customers = "CREATE TABLE IF NOT EXISTS customers (
                 customer_id INT AUTO_INCREMENT PRIMARY KEY,
+
                 name VARCHAR(50) NOT NULL,
                 email VARCHAR(100) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
@@ -95,34 +97,30 @@ class db
             )";
             $this->connection->query($order_details);
 
-
-
-
             $stmt = $this->connection->query("CREATE database if not exists {$this->database}");
             $stmt->execute();
 
             $this->connection->query("USE {$this->database}");
 
-            // insert schema
-            $CustomerTable = "CREATE table if not exists customers (
-                CID INT AUTO_INCREMENT PRIMARY KEY,
-                FirstName VARCHAR(50),
-                LastName VARCHAR(50),
-                Email VARCHAR(100),
-                Phone VARCHAR(20),
-                Address VARCHAR(255),
-                Password VARCHAR(255)
+          $cart_table = "CREATE TABLE IF NOT EXISTS cart (
+                cart_id INT AUTO_INCREMENT PRIMARY KEY,
+                order_id INT NOT NULL,
+                product_id INT NOT NULL,
+                quantity INT NOT NULL,
+                price DECIMAL(10, 2) NOT NULL,
+                FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+                FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
             )";
-            $this->connection->query($CustomerTable);
-
-
+            $this->connection->query($cart_table);
 
 
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());
         }
     }
-    /////////////////////////////functions
+  
+  
+     /////////////////////////////functions
     function get_connection()
     {
         return $this->connection;
@@ -145,6 +143,13 @@ class db
         if (!empty($condition)) {
             $query .= " WHERE $condition";
         }
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+      function ext()
+    {
+        $query = "SELECT  DISTINCT ext FROM rooms";
         $statement = $this->connection->prepare($query);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);

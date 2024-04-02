@@ -4,8 +4,12 @@ include 'connection.php';
 
 $db = new db();
 $conn = $db->get_connection();
-
-$customer_id = 1; // For testing, replace with actual customer_id when using sessions
+// Check if user is logged in
+// if (!isset($_SESSION['customer_id'])) {
+//    header('location: login.php');//edit it !!!!!!!!!!!!!!!!!!!!
+//    exit();
+// }
+$customer_id = 1;//$_SESSION['customer_id']; // For testing, replace with actual customer_id when using sessions
 
 if (!isset($customer_id)) {
     header('location: login.php');
@@ -219,7 +223,7 @@ if(!empty($message)){
 <div class="navbar">
    <div class="navbar-left">
       <a href="userMakeOrder.php">Home</a>
-      <a href="my_orders.php">My Orders</a>
+      <a href="listUserOrders.php">My Orders</a>
    </div>
    <div class="row height d-flex justify-content-center align-items-center">
      <div class="col-md-6">
@@ -232,7 +236,7 @@ if(!empty($message)){
    <div class="navbar-right">
       <div class="user-info">
       <img src="images/<?php echo $fetch_customer['profile_image']; ?>" alt="User Photo">
-         <span><?php echo $fetch_customer['first_name']." ".$fetch_customer['last_name']; ?></span>
+         <span><?php echo $fetch_customer['name']; ?></span>
       </div>
       <a href="logout.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
    </div>
@@ -430,4 +434,3 @@ $stmt_update_total->execute([$grand_total, $order_id]);
 
 </body>
 </html>
-

@@ -12,7 +12,11 @@ $conn = $db->get_connection();
 $customer_id = 1;//$_SESSION['customer_id']; // For testing, replace with actual customer_id when using sessions
 
 if (!isset($customer_id)) {
+<<<<<<< HEAD
     header('location: index.php');
+=======
+    header('location: login.php');
+>>>>>>> 0234e42f838691d478a9dceb2fe8b919a0983908
     exit();
 }
 
