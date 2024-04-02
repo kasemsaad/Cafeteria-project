@@ -232,7 +232,7 @@ if(!empty($message)){
    <div class="navbar-right">
       <div class="user-info">
       <img src="images/<?php echo $fetch_customer['profile_image']; ?>" alt="User Photo">
-         <span><?php echo $fetch_customer['first_name']." ".$fetch_customer['last_name']; ?></span>
+         <span><?php echo $fetch_customer['name']; ?></span>
       </div>
       <a href="logout.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
    </div>

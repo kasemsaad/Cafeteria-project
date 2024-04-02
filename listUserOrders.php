@@ -39,7 +39,7 @@ if (!empty($from_date) && !empty($to_date)) {
    <div class="user-container">
     <?php
     // Fetch customer name and image using customer_id
-    $stmt = $conn->prepare("SELECT first_name, last_name, profile_image FROM customers WHERE customer_id = ?");
+    $stmt = $conn->prepare("SELECT name, profile_image FROM customers WHERE customer_id = ?");
     $stmt->execute([$_SESSION['customer_id']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -48,7 +48,7 @@ if (!empty($from_date) && !empty($to_date)) {
         // Display user information
         ?>
         <div class="user-info">
-            <p>Welcome, <?php echo $user['first_name'] . ' ' . $user['last_name']; ?></p>
+            <p>Welcome, <?php echo $user['name']; ?></p>
             <!-- Add more user info here if needed -->
         </div>
         <div class="user-image">

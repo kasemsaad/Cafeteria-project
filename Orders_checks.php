@@ -58,7 +58,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <?php
     // Fetch customer name and image using customer_id
-    $stmt = $conn->prepare("SELECT first_name, last_name, profile_image FROM customers WHERE customer_id = ?");
+    $stmt = $conn->prepare("SELECT name, profile_image FROM customers WHERE customer_id = ?");
     $stmt->execute([$_SESSION['customer_id']]);
     $login_user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -83,7 +83,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <img src="images/<?php echo $login_user['profile_image']; ?>" alt="User Photo" style=" width: 40px;
     height: 40px;
     border-radius: 50%;">
-         <span><?php echo $login_user['first_name'] . ' ' . $login_user['last_name']; ?></span>
+         <span><?php echo $login_user['name']; ?></span>
          <a href="logout.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
 
       </div>
@@ -163,10 +163,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <?php
 function getCustomerName($conn, $customer_id) {
-    $stmt = $conn->prepare("SELECT first_name, last_name FROM customers WHERE customer_id = ?");
+    $stmt = $conn->prepare("SELECT name FROM customers WHERE customer_id = ?");
     $stmt->execute([$customer_id]);
     $customer = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $customer['first_name'] . ' ' . $customer['last_name'];
+    return $customer['last_name'];
 }
 
 function getExt($conn, $customer_id) {
