@@ -11,7 +11,7 @@ if (isset($_GET['err'])) {
 }
 $db = new db();
 $data = $db->get_data("rooms");
-$dataExt = $db->get_data("rooms", "ext");
+$dataExt = $db->ext();
 ?>
 
 <head>

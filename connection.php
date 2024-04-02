@@ -147,6 +147,13 @@ class db
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+      function ext()
+    {
+        $query = "SELECT  DISTINCT ext FROM rooms";
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
     function insert_data($table, $cols, $values)
     {
         try {
