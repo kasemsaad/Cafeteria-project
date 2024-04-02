@@ -13,6 +13,7 @@ class db
     private $username = 'root';
     private $password = '';
     private $database = 'cafeteria';
+
     private $connection;
 
     function __construct()
@@ -21,6 +22,26 @@ class db
             $dsn = "mysql:host={$this->server}";
             $this->connection = new PDO($dsn, $this->username, $this->password);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+ 
+            $stmt = $this->connection->query("CREATE database if not exists {$this->database}");
+            $stmt->execute();
+
+            $this->connection->query("USE {$this->database}");
+
+            // insert schema
+            $CustomerTable = "CREATE table if not exists customers (
+                CID INT AUTO_INCREMENT PRIMARY KEY,
+                FirstName VARCHAR(50),
+                LastName VARCHAR(50),
+                Email VARCHAR(100),
+                Phone VARCHAR(20),
+                Address VARCHAR(255),
+                Password VARCHAR(255)
+            )";
+            $this->connection->query($CustomerTable);
+
+
+            
             $stmt = $this->connection->query("CREATE database if not exists {$this->database}");
             $stmt->execute();
             $this->connection->exec("USE {$this->database}");
@@ -73,7 +94,6 @@ class db
             $orders = "CREATE TABLE IF NOT EXISTS orders (
                 order_id INT AUTO_INCREMENT PRIMARY KEY,
                 customer_id INT NOT NULL,
-                order_date DATETIME NOT NULL,
                 total_amount DECIMAL(10, 2) NOT NULL,
                 room_number VARCHAR(10) NOT NULL,
                 notes TEXT,
@@ -123,6 +143,23 @@ class db
         }
     }
     /////////////////////////////functions
+
+            $cart_table = "CREATE TABLE IF NOT EXISTS cart (
+                cart_id INT AUTO_INCREMENT PRIMARY KEY,
+                order_id INT NOT NULL,
+                product_id INT NOT NULL,
+                quantity INT NOT NULL,
+                price DECIMAL(10, 2) NOT NULL,
+                FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+                FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
+            )";
+            $this->connection->query($cart_table);
+            
+            
+            } catch (PDOException $e) {
+                die("Connection failed: " . $e->getMessage());
+            }}
+
     function get_connection()
     {
         return $this->connection;
