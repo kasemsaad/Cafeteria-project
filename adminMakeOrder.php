@@ -218,6 +218,11 @@ $fetch_customer = $stmt->fetch(PDO::FETCH_ASSOC);
    <link rel="stylesheet" href="css/style.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+<style>
+   body{
+    background-image: url("images/channels4_profile.jpg");
+}
+</style>
 <body>
    
 <?php
@@ -236,10 +241,13 @@ if(!empty($message)){
 <div class="navbar">
    <div class="navbar-left">
    <a style="color: white;" href="Orders_checks.php">Home |</a>
-        <a style="color: white;" href="viewAllProduct.php">Products |</a>
         <a style="color: white;" href="viewAllUsers.php">Users |</a>
         <a style="color: white;" href="userMakeOrder.php">Manual Order |</a>
-        <a style="color: white;" href="adminChecks.php">Checks</a>
+        <a style="color: white;" href="adminChecks.php">Checks |</a>
+        <a style="color: white;" href="viewAllCategory.php">Categories |</a>
+        <a style="color: white;" href="addCategory.php">Add Category |</a>
+        <a style="color: white;" href="viewAllProduct.php">Products |</a>
+        <a style="color: white;" href="AddProduct.php">Add Product</a>
    </div>
    <div class="row height d-flex justify-content-center align-items-center">
      <div class="col-md-6">

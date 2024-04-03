@@ -200,6 +200,11 @@ $fetch_customer = $stmt->fetch(PDO::FETCH_ASSOC);
    <link rel="stylesheet" href="css/style.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+<style>
+   body{
+    background-image: url("images/channels4_profile.jpg");
+}
+</style>
 <body>
    
 <?php
@@ -212,15 +217,19 @@ if(!empty($message)){
 
 <div class="navbar">
    <div class="navbar-left">
-      <a href="userMakeOrder.php">Home</a>
-      <a href="listUserOrders.php">My Orders</a>
+      <a style="color: #fff;
+   text-decoration: none; margin-right: 20px;" href="userMakeOrder.php">Home</a>
+      <a style="color: #fff;
+   text-decoration: none;
+   margin-right: 20px;" href="listUserOrders.php">My Orders</a>
+  
    </div>
    <div class="row height d-flex justify-content-center align-items-center">
       <div class="col-md-6">
-         <form method="GET" action="userMakeOrder.php" class="form">
+      <form method="GET" action="userMakeOrder.php" class="form d-flex ">
             <i class="fa fa-search"></i>
             <input type="text" class="form-control form-input" name="search" placeholder="Search products...">
-            <input type="submit" value="Search" class="btn btn-primary">
+            <input type="submit"   value="Search" class=" btn-primary ml-3"  style="border-radius:10px;">
          </form>
       </div>
    </div>

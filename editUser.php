@@ -26,13 +26,9 @@ $dataExt = $db->ext();
   <title>Add Users</title>
 </head>
 <style>
-  body {
-    /* background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-image: url("./images/19266-Main.jpg"); */
-    background-color:#EEEEEE;
-  }
+ body{
+    background-image: url("images/channels4_profile.jpg");
+}
 
   .card-registration .select-input.form-control[readonly]:not([disabled]) {
     font-size: 1rem;

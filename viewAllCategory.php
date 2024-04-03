@@ -3,7 +3,12 @@ require("db.php");
 $db = new db();
 $data = $db->get_data("categories");
 $result = $data->fetchAll(PDO::FETCH_ASSOC);
+$conn = $db->get_connection();
+    $stmt = $conn->prepare("SELECT name, profile_image FROM customers WHERE customer_id = ?");
+    $stmt->execute([$_COOKIE['customer_id']]);
+    $login_user = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,8 +20,31 @@ $result = $data->fetchAll(PDO::FETCH_ASSOC);
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>List Category</title>
 </head>
-
+<style>
+    body{
+    background-image: url("images/channels4_profile.jpg");
+}
+</style>
 <body>
+<div class="navbar" style="background-color: #333; color: white; display: flex; justify-content: space-between; align-items: center; height: 56px;">
+    <div class="navbar-left" style="margin-left:10px;">
+    <a style="color: white;" href="Orders_checks.php">Home |</a>
+        <a style="color: white;" href="viewAllUsers.php">Users |</a>
+        <a style="color: white;" href="userMakeOrder.php">Manual Order |</a>
+        <a style="color: white;" href="adminChecks.php">Checks |</a>
+        <a style="color: white;" href="viewAllCategory.php">Categories |</a>
+        <a style="color: white;" href="addCategory.php">Add Category |</a>
+        <a style="color: white;" href="viewAllProduct.php">Products |</a>
+        <a style="color: white;" href="AddProduct.php">Add Product</a>
+    </div>
+    <div class="navbar-right">
+        <div class="user-info" style="display: flex; align-items: center;">
+            <img src="images/<?php echo $login_user['profile_image']; ?>" alt="User Photo" style="width: 40px; height: 40px; border-radius: 50%; margin-right:10px;">
+            <span><?php echo $login_user['name'] ; ?></span>
+            <a style="color: orange;margin-left:10px;" href="index.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+        </div>
+    </div>
+</div>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-10">
@@ -65,5 +93,3 @@ $result = $data->fetchAll(PDO::FETCH_ASSOC);
 </body>
 
 </html>
-<?php //echo "<a href=\"http://localhost/PHPnewproject/category/deleteCategory.php?id={$row['category_id']}\">delete</a>" ; 
-?>

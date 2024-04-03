@@ -34,7 +34,11 @@ $product = $data->fetch(PDO::FETCH_ASSOC);
     <title>Edit Product</title>
 </head>
 
-
+<style>
+    body{
+    background-image: url("images/channels4_profile.jpg");
+}
+</style>
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">

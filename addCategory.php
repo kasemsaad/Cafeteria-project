@@ -70,6 +70,9 @@ function validate($data) {
         text-decoration: none;
     }
     .container{margin-top:100px}
+body{
+    background-image: url("images/channels4_profile.jpg");
+}
 </style>
     <title>Add Category</title>
 </head>
@@ -83,11 +86,14 @@ function validate($data) {
 ?>
 <div class="navbar" style="background-color: #333; color: white; display: flex; justify-content: space-between; align-items: center; height: 56px;">
     <div class="navbar-left" style="margin-left:10px;">
-        <a style="color: white;" href="Orders_checks.php">Home |</a>
-        <a style="color: white;" href="viewAllProduct.php">Products |</a>
+    <a style="color: white;" href="Orders_checks.php">Home |</a>
         <a style="color: white;" href="viewAllUsers.php">Users |</a>
         <a style="color: white;" href="userMakeOrder.php">Manual Order |</a>
-        <a style="color: white;" href="adminChecks.php">Checks</a>
+        <a style="color: white;" href="adminChecks.php">Checks |</a>
+        <a style="color: white;" href="viewAllCategory.php">Categories |</a>
+        <a style="color: white;" href="addCategory.php">Add Category |</a>
+        <a style="color: white;" href="viewAllProduct.php">Products |</a>
+        <a style="color: white;" href="AddProduct.php">Add Product</a>
     </div>
     <div class="navbar-right">
         <div class="user-info" style="display: flex; align-items: center;">

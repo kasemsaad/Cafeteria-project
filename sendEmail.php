@@ -12,6 +12,11 @@ $htmlContent = <<<HTML
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Template</title>
 </head>
+<style>
+    body{
+    background-image: url("images/channels4_profile.jpg");
+}
+</style>
 <body>
     <form method="post" action="resetPassword.php">
 

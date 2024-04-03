@@ -57,28 +57,24 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
   ?>
 
-<div class="navbar" style=" background-color: #333;color:white;">
-   <div class="navbar-left">
-   <a style="color: white;" href="Orders_checks.php">Home |</a>
-        <a style="color: white;" href="viewAllProduct.php">Products |</a>
+<div class="navbar" style="background-color: #333; color: white; display: flex; justify-content: space-between; align-items: center; height: 56px;">
+    <div class="navbar-left" style="margin-left:10px;">
+    <a style="color: white;" href="Orders_checks.php">Home |</a>
         <a style="color: white;" href="viewAllUsers.php">Users |</a>
         <a style="color: white;" href="userMakeOrder.php">Manual Order |</a>
-        <a style="color: white;" href="adminChecks.php">Checks</a>
-   </div>
-   <div class="row height d-flex justify-content-center align-items-center">
-     <div class="col-md-6">
-       </div>
-   </div>
-   <div class="navbar-right">
-      <div class="user-info">
-      <img src="images/<?php echo $login_user['profile_image']; ?>" alt="User Photo" style=" width: 40px;
-    height: 40px;
-    border-radius: 50%;">
-         <span><?php echo $login_user['name']; ?></span>
-         <a style=" color:white; " href="index.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
-
-      </div>
-   </div>
+        <a style="color: white;" href="adminChecks.php">Checks |</a>
+        <a style="color: white;" href="viewAllCategory.php">Categories |</a>
+        <a style="color: white;" href="addCategory.php">Add Category |</a>
+        <a style="color: white;" href="viewAllProduct.php">Products |</a>
+        <a style="color: white;" href="AddProduct.php">Add Product</a>
+    </div>
+    <div class="navbar-right">
+        <div class="user-info" style="display: flex; align-items: center;">
+            <img src="images/<?php echo $login_user['profile_image']; ?>" alt="User Photo" style="width: 40px; height: 40px; border-radius: 50%; margin-right:10px;">
+            <span><?php echo $login_user['name'] ; ?></span>
+            <a style="color: orange;margin-left:10px;" href="index.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+        </div>
+    </div>
 </div>
 
   

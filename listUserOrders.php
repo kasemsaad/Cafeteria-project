@@ -4,9 +4,8 @@ include 'connection.php';
 // Check if user is logged in
 if (!isset($_COOKIE['Email'])) {
    header("location:index.php");
- } elseif ($_COOKIE["role"] !== "User") {
-   header("location:index.php"); ////////// home
- }
+ } 
+ 
 
 // Initialize PDO connection
 $db = new db();
@@ -34,6 +33,11 @@ if (!empty($from_date) && !empty($to_date)) {
    <!-- Custom CSS file link  -->
    <link rel="stylesheet" href="css/listUserOrders.css">
 </head>
+<style>
+   body{
+    background-image: url("images/channels4_profile.jpg");
+}
+</style>
 <body>
 
    <div class="user-container">
