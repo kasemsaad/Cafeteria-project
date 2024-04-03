@@ -3,7 +3,7 @@ require 'connection.php';
 if (!isset($_COOKIE['Email'])) {
   header("location:index.php");
 } elseif ($_COOKIE["role"] !== "Admin") {
-  header("location:home.php"); ////////// home
+  header("location:index.php"); ////////// userMakeOrder
 }
 $err = [];
 if (isset($_GET['err'])) {
@@ -11,7 +11,7 @@ if (isset($_GET['err'])) {
 }
 $db = new db();
 $data = $db->get_data("rooms");
-$dataExt = $db->get_data("rooms", "ext");
+$dataExt = $db->ext();
 ?>
 
 <head>
@@ -24,10 +24,12 @@ $dataExt = $db->get_data("rooms", "ext");
 </head>
 <style>
   body {
-    background-repeat: no-repeat;
+    /* background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    background-image: url("./images/19266-Main.jpg");
+    background-image: url("./images/19266-Main.jpg"); */
+    background-color:#EEEEEE;
+
   }
 
   .card-registration .select-input.form-control[readonly]:not([disabled]) {

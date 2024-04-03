@@ -1,21 +1,37 @@
 <?php
+session_start();
 include 'connection.php';
 
 $db = new db();
 $conn = $db->get_connection();
-
 if (!isset($_COOKIE['Email'])) {
    header("location:index.php");
- } elseif ($_COOKIE["role"] !== "User") {
+ } elseif ($_COOKIE["role"] !== "Admin") {
    header("location:index.php"); ////////// home
  }
+$customer_id = 1;//$_SESSION['customer_id']; // For testing, replace with actual customer_id when using sessions
 
-$customer_id = $_COOKIE['customer_id']; // For testing, replace with actual customer_id when using sessions
+if (!isset($customer_id)) {
+    header('location: index.php');
+    exit();
+}
 
-
+if (isset($_GET['logout'])) {
+    unset($_SESSION['customer_id']);
+    session_destroy();
+    header('location: login.php');
+    exit();
+}
 
 $message = [];
+// Fetch all customers
+$stmt_customers = $conn->prepare("SELECT * FROM customers");
+$stmt_customers->execute();
+$customers = $stmt_customers->fetchAll(PDO::FETCH_ASSOC);
 
+if(isset($_POST['selected_customer'])) {
+    $customer_id = $_POST['selected_customer'];
+} 
 // Check if the order is already submitted
 $stmt_order = $conn->prepare("SELECT order_id FROM orders WHERE customer_id = ? AND order_status = 'Pending'");
 $stmt_order->execute([$customer_id]);
@@ -170,7 +186,7 @@ if (isset($_POST['submit_order'])) {
        $stmt_delete_cart_data->execute();
 
        // Unset the order_id session variable to clear the shopping cart
-       unset($_COOKIE['order_id']);
+       unset($_SESSION['order_id']);
 
        // Redirect to prevent resubmission of form
        header('location:userMakeOrder.php?new_order_id=');
@@ -229,7 +245,7 @@ if(!empty($message)){
       <img src="images/<?php echo $fetch_customer['profile_image']; ?>" alt="User Photo">
          <span><?php echo $fetch_customer['name']; ?></span>
       </div>
-      <a href="index.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+      <a href="logout.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
    </div>
 </div>
 
@@ -266,7 +282,18 @@ if(!empty($message)){
    </div>
 
 </div>
-
+<!-- Update the HTML form with the dropdown menu -->
+<form method="post">
+    <label for="selected_customer">Select Customer:</label>
+    <select name="selected_customer" id="selected_customer">
+        <?php foreach ($customers as $customer): ?>
+            <option value="<?php echo $customer['customer_id']; ?>" <?php echo ($customer_id == $customer['customer_id']) ? 'selected' : ''; ?>>
+                <?php echo $customer['name']; ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+    <input type="submit" value="Select" name="select_customer">
+</form>
 <div class="shopping-orders">
 
    <h1 class="heading">Shopping Orders</h1>

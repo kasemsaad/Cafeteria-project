@@ -1,9 +1,9 @@
 <?php
 require "connection.php";
-if (!isset($_COOKIE['Email'])) {
+if (!isset($_SESSION['Email'])) {
     header("location:index.php");
-} elseif ($_COOKIE["role"] !== "Admin") {
-    header("location:home.php"); ////////// home
+} elseif ($_SESSION["role"] !== "Admin") {
+    header("location:index.php"); ////////// home
 }
 $db = new db();
 $data = $db->get_dataone("customers", " role='User' ");
@@ -20,10 +20,12 @@ $data = $db->get_dataone("customers", " role='User' ");
 </head>
 <style>
     body {
-        background-repeat: no-repeat;
+        /* background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
-        background-image: url("./images/19266-Main.jpg");
+        background-image: url("./images/19266-Main.jpg"); */
+        background-color:#EEEEEE;
+
     }
 
 

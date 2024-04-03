@@ -63,15 +63,22 @@ if (isset($_POST['addUser'])) {
         $db = new db();
         $res = $db->get_data("customers", "email = ?", array($Email));
 
-        if (password_verify($Password, $res[0]['password'])) {
+        if (password_verify($Password, $res[0]['password'])) b2 {
+            setcookie("customer_id", $res[0]['customer_id'], time() + (86400 * 30), "/"); 
             setcookie("Email", $Email, time() + (86400 * 30), "/"); // Example: sets a cookie named "Email" with the value of $Email
             setcookie("role", $res[0]['role'], time() + (86400 * 30), "/");
-            header("location:viewAllUsers.php?success"); /////////////enter after check
+            if (isset($_COOKIE['role'])=="User") {
+                header("location:userMakeOrder.php?success"); /////////////enter after check
+            } else {
+                # code...
+                header("location:Orders_checks.php?success"); /////////////enter after check
+            }
         } else {
+
             header("location:index.php?err=login");
         }
     } catch (mysqli_sql_exception $e) {
-        header("location:index.php?err=mysqli_sql_exception");
+        header("location:CustomerControler.php?err=mysqli_sql_exception");
         exit();
     }
 } else if (isset($_POST["resetPassword"])) {
