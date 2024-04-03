@@ -13,6 +13,7 @@ class db {
       function __construct(){
         $this->connection= new pdo("mysql:host=$this->host;dbname=$this->dbname",$this->user,$this->pass);
       }
+      
 
       function get_connection(){
         return $this->connection;
@@ -22,7 +23,6 @@ class db {
         return $this->connection->query("select * from $table where $condition ");
       }
 
-      
       function delete_data($tablename,$cond){
         $query = "DELETE FROM $tablename WHERE $cond";
         $this->connection->query($query); 

@@ -1,5 +1,7 @@
 <?php
 require("db.php");
+$db = new db();
+$conn = $db->get_connection();
 
 $errors = [];
 
@@ -63,12 +65,39 @@ function validate($data) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <style>
+        .navbar a {
+        text-decoration: none;
+    }
+    .container{margin-top:100px}
+</style>
     <title>Add Category</title>
 </head>
 
 <body>
-
-    <div class="container mt-8">
+<?php
+    // Fetch customer name and image using customer_id
+    $stmt = $conn->prepare("SELECT name, profile_image FROM customers WHERE customer_id = ?");
+    $stmt->execute([$_COOKIE['customer_id']]);
+    $login_user = $stmt->fetch(PDO::FETCH_ASSOC);
+?>
+<div class="navbar" style="background-color: #333; color: white; display: flex; justify-content: space-between; align-items: center; height: 56px;">
+    <div class="navbar-left" style="margin-left:10px;">
+        <a style="color: white;" href="Orders_checks.php">Home |</a>
+        <a style="color: white;" href="viewAllProduct.php">Products |</a>
+        <a style="color: white;" href="viewAllUsers.php">Users |</a>
+        <a style="color: white;" href="userMakeOrder.php">Manual Order |</a>
+        <a style="color: white;" href="adminChecks.php">Checks</a>
+    </div>
+    <div class="navbar-right">
+        <div class="user-info" style="display: flex; align-items: center;">
+            <img src="images/<?php echo $login_user['profile_image']; ?>" alt="User Photo" style="width: 40px; height: 40px; border-radius: 50%; margin-right:10px;">
+            <span><?php echo $login_user['name'] ; ?></span>
+            <a style="color: orange;margin-left:10px;" href="index.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+        </div>
+    </div>
+</div>
+    <div class="container">
         <?php if(isset($error_message)): ?>
         <div class="row justify-content-center">
             <div class="alert alert-danger col-md-6" role="alert">
@@ -96,7 +125,7 @@ function validate($data) {
                                 <input type="text" class="form-control" id="category_name" name="category_name"
                                     required>
                             </div><br>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="created_at">Created At (YYYY-MM-DD HH:MM:SS)</label>
                                 <input type="text" class="form-control" id="created_at" name="created_at"
                                     placeholder="2024-03-18 08:30:00">
@@ -105,7 +134,7 @@ function validate($data) {
                                 <label for="updated_at">Updated At (YYYY-MM-DD HH:MM:SS)</label>
                                 <input type="text" class="form-control" id="updated_at" name="updated_at"
                                     placeholder="2024-03-18 08:30:00">
-                            </div><br>
+                            </div><br> -->
                             <button type="submit" class="btn btn-primary" name="add_category">Add Category</button>
                         </form>
                     </div>

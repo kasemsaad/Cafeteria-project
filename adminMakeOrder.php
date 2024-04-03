@@ -227,10 +227,19 @@ if(!empty($message)){
    }
 }
 ?>
+  <?php
+    // Fetch customer name and image using customer_id
+    $stmt = $conn->prepare("SELECT name, profile_image FROM customers WHERE customer_id = ?");
+    $stmt->execute([$_COOKIE['customer_id']]);
+    $login_user = $stmt->fetch(PDO::FETCH_ASSOC);
+?>
 <div class="navbar">
    <div class="navbar-left">
-      <a href="userMakeOrder.php">Home</a>
-      <a href="listUserOrders.php">My Orders</a>
+   <a style="color: white;" href="Orders_checks.php">Home |</a>
+        <a style="color: white;" href="viewAllProduct.php">Products |</a>
+        <a style="color: white;" href="viewAllUsers.php">Users |</a>
+        <a style="color: white;" href="userMakeOrder.php">Manual Order |</a>
+        <a style="color: white;" href="adminChecks.php">Checks</a>
    </div>
    <div class="row height d-flex justify-content-center align-items-center">
      <div class="col-md-6">

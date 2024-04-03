@@ -3,6 +3,8 @@ require("db.php");
 
 $errors = [];
 $error_message = "";
+$db = new db();
+$conn = $db->get_connection();
 
 if(isset($_POST['add_product'])){
    
@@ -72,8 +74,35 @@ function validate($data) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <style>
+        .navbar a {
+        text-decoration: none;
+    }
+</style>
     <title>Add Product</title>
 </head>
+<?php
+    // Fetch customer name and image using customer_id
+    $stmt = $conn->prepare("SELECT name, profile_image FROM customers WHERE customer_id = ?");
+    $stmt->execute([$_COOKIE['customer_id']]);
+    $login_user = $stmt->fetch(PDO::FETCH_ASSOC);
+?>
+<div class="navbar" style="background-color: #333; color: white; display: flex; justify-content: space-between; align-items: center; height: 56px;">
+    <div class="navbar-left" style="margin-left:10px;">
+        <a style="color: white;" href="Orders_checks.php">Home |</a>
+        <a style="color: white;" href="viewAllProduct.php">Products |</a>
+        <a style="color: white;" href="viewAllUsers.php">Users |</a>
+        <a style="color: white;" href="userMakeOrder.php">Manual Order |</a>
+        <a style="color: white;" href="adminChecks.php">Checks</a>
+    </div>
+    <div class="navbar-right">
+        <div class="user-info" style="display: flex; align-items: center;">
+            <img src="images/<?php echo $login_user['profile_image']; ?>" alt="User Photo" style="width: 40px; height: 40px; border-radius: 50%; margin-right:10px;">
+            <span><?php echo $login_user['name'] ; ?></span>
+            <a style="color: orange;margin-left:10px;" href="index.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+        </div>
+    </div>
+</div>
 <div class="container mt-8">
     <?php if(isset($error_message)): ?>
     <div class="row justify-content-center">
@@ -120,9 +149,11 @@ function validate($data) {
                         <div class="form-group">
                             <label for="category_id">Category ID</label>
                             <input type="number" class="form-control" id="category_id" name="category_id" required>
+                            <a href="addCategory.php">Add Category</a>
                         </div><br>
                         <button type="submit" class="btn btn-primary" name="add_product">Add Product</button>
                     </form>
+                   
                 </div>
             </div>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

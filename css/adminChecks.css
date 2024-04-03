@@ -116,3 +116,7 @@ margin-left: 10px; /* Adjust as needed */
     height: 100%;
     object-fit: cover;
  } */
+
+ .navbar a {
+   text-decoration: none;
+}

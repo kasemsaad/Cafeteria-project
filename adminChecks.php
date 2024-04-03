@@ -38,22 +38,25 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $stmt->execute([$_COOKIE['customer_id']]);
     $login_user = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
-<div class="navbar" style="background-color: #333; color: white; display: flex; justify-content: space-between;">
-    <div class="navbar-left"  style="display: flex; align-items: center;">
+<div class="navbar" style="background-color: #333; color: white; display: flex; justify-content: space-between; align-items: center; height: 56px;">
+    <div class="navbar-left" style="margin-left:10px;">
         <a style="color: white;" href="Orders_checks.php">Home |</a>
-        <a style="color: white;" href="#">Products |</a>
-        <a style="color: white;" href="#">Users |</a>
+        <a style="color: white;" href="viewAllProduct.php">Products |</a>
+        <a style="color: white;" href="viewAllUsers.php">Users |</a>
         <a style="color: white;" href="userMakeOrder.php">Manual Order |</a>
         <a style="color: white;" href="adminChecks.php">Checks</a>
     </div>
-    <div class="navbar-right" style="display: flex; align-items: center;">
+    <div class="navbar-right">
         <div class="user-info" style="display: flex; align-items: center;">
-            <img src="images/<?php echo $login_user['profile_image']; ?>" alt="User Photo" style="width: 40px; height: 40px; border-radius: 50%;">
-            <span style="margin-left: 5px;"><?php echo $login_user['name']; ?></span>
-            <a style="color: white; margin-left: auto;" href="index.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+            <img src="images/<?php echo $login_user['profile_image']; ?>" alt="User Photo" style="width: 40px; height: 40px; border-radius: 50%; margin-right:10px;">
+            <span><?php echo $login_user['name'] ; ?></span>
+            <a style="color: orange;margin-left:10px;" href="index.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
         </div>
     </div>
 </div>
+
+
+
 
 
 
