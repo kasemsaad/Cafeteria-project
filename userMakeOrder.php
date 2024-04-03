@@ -6,9 +6,7 @@ $conn = $db->get_connection();
 
 if (!isset($_COOKIE['Email'])) {
    header("location:index.php");
- } elseif ($_COOKIE["role"] !== "User") {
-   header("location:index.php"); ////////// home
- }
+ } 
 
 $customer_id = $_COOKIE['customer_id']; // For testing, replace with actual customer_id when using sessions
 

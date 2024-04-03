@@ -59,12 +59,11 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <div class="navbar" style=" background-color: #333;color:white;">
    <div class="navbar-left">
-      <a style=" color:white; "href="Orders_checks.php">Home |</a>
-      <a style=" color:white;" href="#">Products |</a>
-      <a style=" color:white;" href="#">Users |</a>
-      <a style=" color:white;" href=" userMakeOrder.php">Manual Order|</a>
-      <a style=" color:white;" href="adminChecks.php">Checks</a>
-      
+   <a style="color: white;" href="Orders_checks.php">Home |</a>
+        <a style="color: white;" href="viewAllProduct.php">Products |</a>
+        <a style="color: white;" href="viewAllUsers.php">Users |</a>
+        <a style="color: white;" href="userMakeOrder.php">Manual Order |</a>
+        <a style="color: white;" href="adminChecks.php">Checks</a>
    </div>
    <div class="row height d-flex justify-content-center align-items-center">
      <div class="col-md-6">
