@@ -1,12 +1,11 @@
 <?php
-session_start();
 include 'connection.php';
 
-// // Check if user is logged in
-// if (!isset($_SESSION['customer_id'])) {
-//     header('location: login.php');
-//     exit();
-// }
+if (!isset($_COOKIE['Email'])) {
+    header("location:index.php");
+  } elseif ($_COOKIE["role"] !== "Admin") {
+    header("location:index.php"); ////////// home
+  }
 
 // Initialize PDO connection
 $db = new db();
@@ -33,46 +32,48 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 
-   <div class="user-container">
     <?php
     // Fetch customer name and image using customer_id
     $stmt = $conn->prepare("SELECT name, profile_image FROM customers WHERE customer_id = ?");
-    $stmt->execute([$_SESSION['customer_id']]);
+    $stmt->execute([$_COOKIE['customer_id']]);
     $login_user = $stmt->fetch(PDO::FETCH_ASSOC);
+?>
+<div class="navbar" style="background-color: #333; color: white; display: flex; justify-content: space-between;">
+    <div class="navbar-left"  style="display: flex; align-items: center;">
+        <a style="color: white;" href="Orders_checks.php">Home |</a>
+        <a style="color: white;" href="#">Products |</a>
+        <a style="color: white;" href="#">Users |</a>
+        <a style="color: white;" href="userMakeOrder.php">Manual Order |</a>
+        <a style="color: white;" href="adminChecks.php">Checks</a>
+    </div>
+    <div class="navbar-right" style="display: flex; align-items: center;">
+        <div class="user-info" style="display: flex; align-items: center;">
+            <img src="images/<?php echo $login_user['profile_image']; ?>" alt="User Photo" style="width: 40px; height: 40px; border-radius: 50%;">
+            <span style="margin-left: 5px;"><?php echo $login_user['name']; ?></span>
+            <a style="color: white; margin-left: auto;" href="index.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+        </div>
+    </div>
+</div>
 
-    // Check if user data is retrieved successfully
-    if ($login_user) {
-        // Display user information
-        ?>
-        <div class="user-info">
-            <p>Welcome, <?php echo  $login_user['name']; ?></p>
-            <!-- Add more user info here if needed -->
-        </div>
-        <div class="user-image">
-            <img src="images/<?php echo $login_user['profile_image']; ?>" alt="User Image">
-            <!-- Assuming profile_image is the path to the user's image -->
-        </div>
-    <?php } else {
-        // Display a default message if user data is not found
-        ?>
-        <p>User data not found.</p>
-    <?php } ?>
+
+
 
  <!-- Form to specify date range -->
- <form method="post">
+
+
+
+</div>
+<div class="container">
+   <h1>Checks</h1>
+ <!-- Display users in tabular format -->
+<!-- Main table -->
+<form method="post">
     <label for="from_date">From:</label>
     <input type="date" id="from_date" name="from_date" value="<?php echo htmlentities($from_date); ?>">
     <label for="to_date">To:</label>
     <input type="date" id="to_date" name="to_date" value="<?php echo htmlentities($to_date); ?>">
     <button type="submit">Filter</button>
 </form>
-
-
-</div>
-<div class="container">
-   <h1>My Orders</h1>
- <!-- Display users in tabular format -->
-<!-- Main table -->
 <table>
     <thead>
         <tr>

@@ -1,12 +1,12 @@
 <?php
-session_start();
 include 'connection.php';
 
 // Check if user is logged in
-if (!isset($_SESSION['customer_id'])) {
-    header('location: index.php');//edit it !!!!!!!!!!!!!!!!!!!!
-    exit();
-}
+if (!isset($_COOKIE['Email'])) {
+   header("location:index.php");
+ } elseif ($_COOKIE["role"] !== "User") {
+   header("location:index.php"); ////////// home
+ }
 
 // Initialize PDO connection
 $db = new db();
@@ -20,7 +20,7 @@ $orders = [];
 // Fetch orders based on the specified date range
 if (!empty($from_date) && !empty($to_date)) {
     $stmt = $conn->prepare("SELECT * FROM orders WHERE customer_id = ? AND created_at BETWEEN ? AND ? AND order_status != 'Pending';");
-    $stmt->execute([$_SESSION['customer_id'], $from_date, $to_date]);
+    $stmt->execute([$_COOKIE['customer_id'], $from_date, $to_date]);
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
@@ -40,7 +40,7 @@ if (!empty($from_date) && !empty($to_date)) {
     <?php
     // Fetch customer name and image using customer_id
     $stmt = $conn->prepare("SELECT name, profile_image FROM customers WHERE customer_id = ?");
-    $stmt->execute([$_SESSION['customer_id']]);
+    $stmt->execute([$_COOKIE['customer_id']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
    ?>

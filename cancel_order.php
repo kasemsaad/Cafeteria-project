@@ -1,13 +1,12 @@
 <?php
-session_start();
 include 'connection.php';
 
 // Check if user is logged in
-if (!isset($_SESSION['customer_id'])) {
-    // Redirect to login page if user is not logged in
-    header('Location: index.php');
-    exit();
-}
+if (!isset($_COOKIE['Email'])) {
+    header("location:index.php");
+  } elseif ($_COOKIE["role"] !== "Admin") {
+    header("location:index.php"); ////////// home
+  }
 
 // Check if the order ID is provided in the request
 if (!isset($_GET['order_id'])) {
@@ -25,7 +24,7 @@ $conn = $db->get_connection();
 
 // Check if the order belongs to the logged-in customer
 $stmt = $conn->prepare("SELECT * FROM orders WHERE order_id = ? AND customer_id = ?");
-$stmt->execute([$order_id, $_SESSION['customer_id']]);
+$stmt->execute([$order_id, $_COOKIE['customer_id']]);
 $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$order) {

@@ -1,30 +1,19 @@
 <?php
-session_start();
 include 'connection.php';
 
 $db = new db();
 $conn = $db->get_connection();
-// Check if user is logged in
-// if (!isset($_SESSION['customer_id'])) {
-//    header('location: login.php');//edit it !!!!!!!!!!!!!!!!!!!!
-//    exit();
-// }
-$customer_id = 1;//$_SESSION['customer_id']; // For testing, replace with actual customer_id when using sessions
 
-// if (!isset($customer_id)) {
-//     header('location: index.php');
-//     exit();
-// }
-
-// if (isset($_GET['logout'])) {
-//     unset($_SESSION['customer_id']);
-//     session_destroy();
-//     header('location: index.php');
-//     exit();
-// }
 if (!isset($_COOKIE['Email'])) {
    header("location:index.php");
- } 
+ } elseif ($_COOKIE["role"] !== "User") {
+   header("location:index.php"); ////////// home
+ }
+
+$customer_id = $_COOKIE['customer_id']; // For testing, replace with actual customer_id when using sessions
+
+
+
 $message = [];
 
 // Check if the order is already submitted
@@ -181,7 +170,7 @@ if (isset($_POST['submit_order'])) {
        $stmt_delete_cart_data->execute();
 
        // Unset the order_id session variable to clear the shopping cart
-       unset($_SESSION['order_id']);
+       unset($_COOKIE['order_id']);
 
        // Redirect to prevent resubmission of form
        header('location:userMakeOrder.php?new_order_id=');
@@ -240,7 +229,7 @@ if(!empty($message)){
       <img src="images/<?php echo $fetch_customer['profile_image']; ?>" alt="User Photo">
          <span><?php echo $fetch_customer['name']; ?></span>
       </div>
-      <a href="logout.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+      <a href="index.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
    </div>
 </div>
 

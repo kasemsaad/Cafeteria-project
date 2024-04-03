@@ -1,7 +1,11 @@
 <?php
-session_start();
 include 'connection.php';
 
+if (!isset($_COOKIE['Email'])) {
+    header("location:index.php");
+  } elseif ($_COOKIE["role"] !== "Admin") {
+    header("location:index.php"); ////////// home
+  }
 // Initialize PDO connection
 $db = new db();
 $conn = $db->get_connection();
@@ -24,18 +28,6 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     background-image: url("images/channels4_profile.jpg");
 }
 
-     /* CSS styles for user container and form */
-     .user-container {
-    position: fixed;
-    top: 20px;
-    left: 20px !important;
-    display: flex;
-    align-items: center;
-    background-color: #ffffff;
-    padding: 10px;
-    border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
 
         .date-filter-form {
            
@@ -65,13 +57,13 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
   ?>
 
-<div class="navbar">
+<div class="navbar" style=" background-color: #333;color:white;">
    <div class="navbar-left">
-      <a href="Orders_checks.php">Home</a>
-      <a href="#">Products</a>
-      <a href="#">Users</a>
-      <a href=" userMakeOrder.php">Manual Order</a>
-      <a href="adminChecks.php">Chicks</a>
+      <a style=" color:white; "href="Orders_checks.php">Home |</a>
+      <a style=" color:white;" href="#">Products |</a>
+      <a style=" color:white;" href="#">Users |</a>
+      <a style=" color:white;" href=" userMakeOrder.php">Manual Order|</a>
+      <a style=" color:white;" href="adminChecks.php">Checks</a>
       
    </div>
    <div class="row height d-flex justify-content-center align-items-center">
@@ -84,7 +76,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     height: 40px;
     border-radius: 50%;">
          <span><?php echo $login_user['name']; ?></span>
-         <a href="logout.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+         <a style=" color:white; " href="index.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
 
       </div>
    </div>

@@ -4,11 +4,11 @@ include 'connection.php';
 
 $db = new db();
 $conn = $db->get_connection();
-// Check if user is logged in
-// if (!isset($_SESSION['customer_id'])) {
-//    header('location: login.php');//edit it !!!!!!!!!!!!!!!!!!!!
-//    exit();
-// }
+if (!isset($_COOKIE['Email'])) {
+   header("location:index.php");
+ } elseif ($_COOKIE["role"] !== "Admin") {
+   header("location:index.php"); ////////// home
+ }
 $customer_id = 1;//$_SESSION['customer_id']; // For testing, replace with actual customer_id when using sessions
 
 if (!isset($customer_id)) {
