@@ -211,27 +211,30 @@ if(!empty($message)){
    }
 }
 ?>
+
 <div class="navbar">
    <div class="navbar-left">
       <a href="userMakeOrder.php">Home</a>
       <a href="listUserOrders.php">My Orders</a>
    </div>
    <div class="row height d-flex justify-content-center align-items-center">
-     <div class="col-md-6">
-           <div class="form">
-             <i class="fa fa-search"></i>
-             <input type="text" class="form-control form-input" placeholder="Search anything...">
-            </div>
-       </div>
+      <div class="col-md-6">
+         <form method="GET" action="userMakeOrder.php" class="form">
+            <i class="fa fa-search"></i>
+            <input type="text" class="form-control form-input" name="search" placeholder="Search products...">
+            <input type="submit" value="Search" class="btn btn-primary">
+         </form>
+      </div>
    </div>
    <div class="navbar-right">
       <div class="user-info">
-      <img src="images/<?php echo $fetch_customer['profile_image']; ?>" alt="User Photo">
+         <img src="images/<?php echo $fetch_customer['profile_image']; ?>" alt="User Photo">
          <span><?php echo $fetch_customer['name']; ?></span>
       </div>
       <a href="index.php" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
    </div>
 </div>
+
 
 <div class="container">
 
@@ -242,9 +245,16 @@ if(!empty($message)){
    <div class="box-container">
 
    <?php
-      // Fetch products
-      $stmt = $conn->prepare("SELECT * FROM `products`");
-      $stmt->execute();
+      // Fetch products based on search query if present
+$search_query = isset($_GET['search']) ? $_GET['search'] : '';
+if (!empty($search_query)) {
+    $stmt = $conn->prepare("SELECT * FROM `products` WHERE product_name LIKE ?");
+    $stmt->execute(["%" . $search_query . "%"]);
+} else {
+    // Fetch all products if no search query is provided
+    $stmt = $conn->prepare("SELECT * FROM `products`");
+    $stmt->execute();
+}
       
       while($fetch_product = $stmt->fetch(PDO::FETCH_ASSOC)){
    ?>
