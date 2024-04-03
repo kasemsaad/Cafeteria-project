@@ -2,7 +2,8 @@
 require "connection.php";
 if (!isset($_SESSION['Email'])) {
     header("location:index.php");
-} elseif ($_SESSION["role"] !== "Admin") {
+
+} elseif ($_COOKIE["role"] !== "Admin") {
     header("location:index.php"); ////////// home
 }
 $db = new db();
