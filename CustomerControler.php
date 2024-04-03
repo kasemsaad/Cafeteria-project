@@ -63,6 +63,7 @@ if (isset($_POST['addUser'])) {
         $db = new db();
         $res = $db->get_data("customers", "email = ?", array($Email));
 
+
         if (password_verify($Password, $res[0]['password'])) {
             setcookie("customer_id", $res[0]['customer_id'], time() + (86400 * 30), "/"); 
             setcookie("Email", $Email, time() + (86400 * 30), "/"); // Example: sets a cookie named "Email" with the value of $Email

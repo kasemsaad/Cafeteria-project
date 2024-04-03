@@ -20,10 +20,12 @@ $data = $db->get_dataone("customers", "customer_id=$id");
 </head>
 <style>
     body {
-        background-repeat: no-repeat;
+        /* background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
-        background-image: url("./images/19266-Main.jpg");
+        background-image: url("./images/19266-Main.jpg"); */
+        background-color:#EEEEEE;
+
     }
 
 

@@ -228,6 +228,7 @@ if(!empty($message)){
    </div>
    <div class="navbar-right">
       <div class="user-info">
+
          <img src="images/<?php echo $fetch_customer['profile_image']; ?>" alt="User Photo">
          <span><?php echo $fetch_customer['name']; ?></span>
       </div>

@@ -27,10 +27,11 @@ $dataExt = $db->ext();
 </head>
 <style>
   body {
-    background-repeat: no-repeat;
+    /* background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    background-image: url("./images/19266-Main.jpg");
+    background-image: url("./images/19266-Main.jpg"); */
+    background-color:#EEEEEE;
   }
 
   .card-registration .select-input.form-control[readonly]:not([disabled]) {
